@@ -1,0 +1,170 @@
+﻿@{
+    Layout = "_Layout_Manage";
+    ViewBag.Title = "";
+
+}
+<div class="card">
+    <div class="card-header">
+        <div class="float-left">
+            <button type="button" class="btn btn-primary btnAddNew" data-toggle="modal" data-target="#CreateOrUpdateModal"><i class="fa fa-plus">Thêm mới</i></button>
+        </div>
+        <div class="float-right frame-header">
+            <input placeholder="Tìm kiếm ..." name="Keyword" />
+            <button type="button" class="btn btn-primary btnSearch"><i class="fa fa-search">Tìm kiếm</i></button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div>
+            Số bản ghi/trang:&nbsp;
+            <select name="ValuePage">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">30</option>
+                <option value="100">40</option>
+            </select>
+        </div>
+        <div class="" style="width:100%">
+            <table id="TBLDANHSACH" style="border:solid 1px">
+                <thead>
+                    <tr>
+                        <th class="text-center" style="width:70px;">STT</th>
+                        <th class="text-center" style="width:70px;">#</th>
+                        <th class="text-center" style="width:200px;">Tên thể loại</th>
+                        <th class="text-center" style="width:500px;">Mô tả</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" data-backdrop="static" id="CreateOrUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title inline-block" id="exampleModalLabel"><i class='fa fa-list-alt' aria-hidden='true'></i>&nbsp;Cập nhật thông tin thể loại</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-content">
+                <input name="CategoryId" class="hide" style="display:none" />
+                <div class="">
+                    <div class="col-md-3"><span>Tên thể loại:<span style="color:red">*</span>&nbsp;</span></div>
+                    <div class="col-md-9"><input name="CategoryName" placeholder="Tên thể loại" /></div>
+                </div>
+                <div class="">
+                    <div class="col-sm-3"><span>Mô tả:&nbsp;</span></div>
+                    <div class="col-sm-9">
+                        <textarea class="form-control" name="Description" placeholder="Mô tả" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btnSave">Lưu lại</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @*<script src=""></script>*@
+    <script>
+        $(document).ready(function () { //Sau khi load xong html
+            function LoadContentSearch(pageNum) {
+                this.Keyword = $('frame-header input[name=Keyword]').val(); //Lấy giá trị của ô input[name=Keyword] : giá trị tìm kiếm
+                this.ValuePage = $('select[name=ValuePage]').val(); //Lấy giá trị của ô select[name=ValuePage] : số bản ghi trong 1 trang
+                this.PageNum = pageNum //trang số
+            }
+
+            function Category() {
+                this.CategoryId = ($('input[name=CategoryId]').val() || 0);
+                this.CategoryName = $('input[name=CategoryName]').val();
+                this.Description = $('[name=Description]').val();
+            }
+            var $danhmuc = {
+                init: function () {
+                    $danhmuc.LoadDanhSach(1);
+                    $danhmuc.SearchClick();
+                    $danhmuc.CreateOrUpdate();
+                },
+                $thisPage: $('.card'),
+                SearchClick: function () {
+                    $danhmuc.$thisPage.find('.btnSearch').off('click').on('click', function () { $danhmuc.LoadDanhSach(1); }); //Sự kiện khi click vào nút có class btnSearch
+                },
+                LoadDanhSach: function (pageNum) {
+                    var dataSend = new LoadContentSearch(pageNum);
+                    var getResponse = AjaxConfig.sendRequestToServer("/Category/GetList", "GET", dataSend); //Gọi vào controller Category, hàm Getlist, truyền vào DataSend
+                    getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/LichSuTraCuu/GetList", "GET", dataSend);
+                        console.log(response);
+                        if (response.header.msgType == 200) {
+                            $danhmuc.PageCurrent = pageNum;
+                            var htmlContent = "";
+                            response.data = response.data || [];
+                            if (response.data.length == 0) {
+                                htmlContent = '<tr><td colspan="10" class="text-center">Không có dữ liệu.</td></tr>';
+                                $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
+                                $('.countItem').text(response.data.length);
+                                $('.pagination-page').html('');
+                                return false;
+                            }
+                            for (var i = 0; i < response.data.length; i++) {
+                                var $Item = response.data[i];
+                                htmlContent += '<tr>' +
+                                    '<td class="text-center">' + (i + 1) + '</td>' +
+                                    '<td class="text-center"></td>' +
+                                    '<td class="text-center">' + ($Item.categoryName || '') + '</td>' +
+                                    '<td class="text-center">' + ($Item.description || '') + '</td>' +
+                                    '</tr>';
+                            }
+                            htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
+                            $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
+                            $('.countItem').text(response.data.length);
+                            /*LoadPaginationPage($danhmuc.$thisPage, $danhmuc.LoadDanhSach, response.Body.TotalRowData, response.Body.Data.length, pageNum, valuePage || 100);*/
+                        } else {
+                            /*$msgDialog.confirm(response.Header.MsgType, null, response.Body.Description, null, null, null);*/
+                        }
+                    }).catch(function (xhr) {
+                        AjaxConfig.CatchError(xhr);
+                    });
+                },
+                LoadDataSend: function () {
+                    let item = new Category();
+                    if (item.CategoryName == "") { return alert("Vui lòng nhập tên thể loại") };
+                    return item;
+                },
+                CreateOrUpdate: function () {
+                    $('#CreateOrUpdateModal .btnSave').off('click').on('click', function () {
+                        let dataSend = $danhmuc.LoadDataSend();
+                        if (dataSend) {
+                            let id = ($('input[name=CategoryId]').val() || 0);
+                            let url = (id == 0 || id == "") ? "/Category/AddNew" : "/Category/Update";
+                            var getResponse = AjaxConfig.sendRequestToServer(url, "GET", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == 200) {
+                                    alert(response.description);
+                                    $danhmuc.LoadDanhSach(1);
+                                    $('#CreateOrUpdateModal').modal('hide');
+                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                }
+                                else {
+                                    alert(response.description);
+                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                }
+            };
+
+            $danhmuc.init();
+        });
+
+    </script>
+}
