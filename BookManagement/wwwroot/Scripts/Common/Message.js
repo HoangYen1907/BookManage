@@ -49,7 +49,7 @@ var $MessageBox = {
     },
     confirm: function (type, title, description, containerAround, href, objFocus) {
         title = (!title || title == "") ? '<i class="fa fa-bell-o"></i>&nbsp;THÔNG BÁO' : title;
-        containerAround = containerAround || $('.content-wrapper');
+        containerAround = containerAround || $('.card');
         href = href || null;
         objFocus = objFocus || null;
         let resultType = this.getTypeConfirmBox(type);
@@ -126,7 +126,7 @@ var $MessageBox = {
         Description += "<p><b>- Không có quyền truy cập chức năng này.</b> <i>(Khắc phục: Liên hệ với quản trị hệ thống.)</i></p>";
         Description += "<p><b>- Server xử lý bị lỗi!.</b></p></div>";
         this.confirm('red', null, Description, null, null, null)
-        //this.confirmDialog(null, Description, "red", null, null, null);
+        this.confirmDialog(null, Description, "red", null, null, null);
     }
 };
 var $msgDialog = $MessageBox;

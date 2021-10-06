@@ -30,7 +30,7 @@
                 </select>
             </div>
             <div class="col-2 text-right">
-                <a asp-controller="Book" asp-action="Index">Back to full List</a>
+                <a asp-controller="Book" asp-action="Index">Quay lại danh sách</a>
             </div>
         </div>
         <div class="" style="width:100%; margin-top:10px;">
@@ -72,18 +72,22 @@
                 </div>
                 <div class="">
                     <div class="col-md-3"><span>Thể loại:&nbsp;</span></div>
-                    <div class="col-md-12">
-                        <select multiple name="Category" style="border: 1px solid #ebe9e9">
-                            @foreach (var item in lstCategory)
-                            {
-                                <option value="@item.CategoryId">@item.CategoryName</option>
-                            }
-                        </select>
+                    <div class="col-md-12" style="display:flex">
+                        @foreach (var item in lstCategory)
+                        {
+                            <div class="col-md-3">
+                                <input type="checkbox" data-id="@item.CategoryId" class="category" name="@("Category"+item.CategoryId)" id="@("Category"+item.CategoryId)" />
+                                <label for="@("Category"+item.CategoryId)" style="cursor:pointer">@item.CategoryName</label>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div class="">
                     <div class="col-md-3"><span>Hình ảnh:&nbsp;</span></div>
-                    <div class="col-md-12"><input type="file" name="BookImage" placeholder="Hình ảnh" class="form-control-file"/></div>
+                    <div class="col-md-3"><input type="file" name="BookImage" placeholder="Hình ảnh" class="form-control-file" accept="image/*"/></div>
+                    <div>
+                        <img src="#" alt="" />
+                    </div>
                 </div>
                 <div class="">
                     <div class="col-sm-3"><span>Mô tả:&nbsp;</span></div>
@@ -110,42 +114,32 @@
                 this.PageNum = pageNum //trang số
             }
 
+            function GetListCate() {
+                let lstCate = []; 
+                $modal.find(".category[type=checkbox]:checked").each(function () {
+                    let id = $(this).data('id');
+                    if (id > 0) {
+                        lstCate.push(id);
+                    }
+                })
+                return lstCate;
+            }
+
             function Book() {
-                this.BookId = ($('input[name=BookId]').val() || 0);
-                this.BookName = $('input[name=BookName]').val();
-                this.Author = $('input[name=Author]').val();
+                this.bookId = ($('input[name=BookId]').val() || 0);
+                this.bookName = $('input[name=BookName]').val();
+                this.author = $('input[name=Author]').val();
                 //image
-                this.Image = $('input[name=BookImage]').val();
-                this.Description = $('[name=Description]').val();
+                this.image = "";
+                this.description = $('[name=Description]').val();
                 //category
             }
             var $danhmuc = {
                 init: function () {
                     $danhmuc.LoadDanhSach(1);
-                    $danhmuc.OpenModal();
-                    $danhmuc.CloseModal();
                     $danhmuc.SearchClick();
-                    $danhmuc.CreateOrUpdate();
                 },
                 $thisPage: $('.card'),
-                OpenModal: function () {
-                    $modal.on('shown.bs.modal', function () {
-                        let id = ($modal.find('input[name=BookId]').val() || 0);
-                        if (id == 0) {
-                            $danhmuc.ResetModal();
-                        }
-                    })
-                },
-                CloseModal: function () {
-                    $modal.on('hidden.bs.modal', function () {
-                        $danhmuc.ResetModal();
-                    })
-                },
-                ResetModal: function () {
-                    $modal.find('input').val("");
-                    $modal.find('textarea').val("");
-                    $modal.find('select').val("");
-                },
                 SearchClick: function () {
                     $danhmuc.$thisPage.find('.btnSearch').off('click').on('click', function () { $danhmuc.LoadDanhSach(1); }); //Sự kiện khi click vào nút có class btnSearch
                 },
@@ -185,40 +179,11 @@
                             $danhmuc.EditClick();
                             /*LoadPaginationPage($danhmuc.$thisPage, $danhmuc.LoadDanhSach, response.Body.TotalRowData, response.Body.Data.length, pageNum, valuePage || 100);*/
                         } else {
-                            /*$msgDialog.confirm(response.Header.MsgType, null, response.Body.Description, null, null, null);*/
+                            $msgDialog.confirm(response.header.msgType, null, response.body.description, null, null, null);
                         }
                     }).catch(function (xhr) {
                         AjaxConfig.CatchError(xhr);
                     });
-                },
-                LoadDataSend: function () {
-                    let item = new Book();
-                    if (item.BookName == "") { return alert("Vui lòng nhập tên sách") };
-                    return item;
-                },
-                CreateOrUpdate: function () {
-                    $('#CreateOrUpdateModal .btnSave').off('click').on('click', function () {
-                        let dataSend = $danhmuc.LoadDataSend();
-                        if (dataSend) {
-                            let id = ($('input[name=BookId]').val() || 0);
-                            let url = (id == 0 || id == "") ? "/Book/AddNew" : "/Book/Update";
-                            var getResponse = AjaxConfig.sendRequestToServer(url, "GET", dataSend);
-                            getResponse.then(function (response) {
-                                if (response.header.msgType == 200) {
-                                    alert(response.description);
-                                    $danhmuc.LoadDanhSach(1);
-                                    $('#CreateOrUpdateModal').modal('hide');
-                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
-                                }
-                                else {
-                                    alert(response.description);
-                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
-                                }
-                            }).catch(function (xhr) {
-                                AjaxConfig.CatchError(xhr);
-                            });
-                        }
-                    })
                 },
                 EditClick: function () {
                     $('.btnEdit').off('click').on('click', function () {
@@ -227,8 +192,9 @@
                             let dataSend = { "id": id };
                             var getResponse = AjaxConfig.sendRequestToServer("Book/GetBook", "GET", dataSend);
                             getResponse.then(function (response) {
-                                if (response.header.msgType == 200) {
+                                if (response.header.msgType == BoxType.Success) {
                                     let item = response.data;
+                                    let lstCate = item.lstCate;
                                     $('input[name=BookId]').val(item.bookId);
                                     $('input[name=BookName]').val(item.bookName);
                                     $('input[name=Author]').val(item.author);
@@ -236,6 +202,11 @@
                                     $('input[name=BookImage]').val(item.bookImage);
                                     $('[name=Description]').val(item.description);
                                     //category
+                                    for (let cateId of lstCate) {
+                                        let name = "Category" + cateId;
+                                        $modal.find(`input[name=${name}]`).prop('checked', true);
+                                        /*$modal.find('input[name='+name+']').prop('checked', true);*/
+                                    }
                                     $modal.modal('show');
                                 }
                                 else {
@@ -254,14 +225,12 @@
                             let dataSend = { "id": id }; // lấy được id của Category
                             var getResponse = AjaxConfig.sendRequestToServer("Book/Delete", "GET", dataSend);
                             getResponse.then(function (response) {
-                                if (response.header.msgType == 200) {
-                                    alert(response.description);
+                                if (response.header.msgType == BoxType.Success) {
                                     $danhmuc.LoadDanhSach(1);
-                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
                                 }
                                 else {
-                                    alert(response.description);
-                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
                                 }
                             }).catch(function (xhr) {
                                 AjaxConfig.CatchError(xhr);
@@ -270,8 +239,84 @@
                     })
                 }
             };
-
             $danhmuc.init();
+
+            var $updateModal = {
+                init: function () {
+                    $updateModal.OpenModal();
+                    $updateModal.CloseModal();
+                    $updateModal.CreateOrUpdate();
+                    $updateModal.FileChange();
+                },
+                OpenModal: function () {
+                    $modal.on('shown.bs.modal', function () {
+                        let id = ($modal.find('input[name=BookId]').val() || 0);
+                        if (id == 0) {
+                            $updateModal.ResetModal();
+                        }
+                    })
+                },
+                CloseModal: function () {
+                    $modal.on('hidden.bs.modal', function () {
+                        $updateModal.ResetModal();
+                    })
+                },
+                ResetModal: function () {
+                    $modal.find('input').not('[type=checkbox]').val("");
+                    $modal.find('input[type=checkbox]').prop('checked', false);
+                    $modal.find('textarea').val("");
+                },
+                LoadDataSend: function () {
+                    let dataForm = new FormData();
+                    let item = new Book();
+                    if (item.BookName == "") {
+                        alert("Vui lòng nhập tên sách");
+                        return false;
+                    };
+                    dataForm.append('generalInfo', JSON.stringify(item));
+                    let $file = $modal.find('input[type=file]');
+                    let file = $file[0].files[0];
+                    dataForm.append('file', file);
+                    let lstCate = GetListCate();
+                    dataForm.append('lstCate', JSON.stringify(lstCate));
+                    return dataForm;
+                },
+                CreateOrUpdate: function () {
+                    $modal.find('.btnSave').off('click').on('click', function () {
+                        let dataSend = $updateModal.LoadDataSend();
+                        if (dataSend) {
+                            let id = ($('input[name=BookId]').val() || 0);
+                            let url = (id == 0 || id == "") ? "/Book/AddNew" : "/Book/Update";
+                            var getResponse = AjaxConfig.sendRequestFileToServer(url, "Post", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == BoxType.Success) {
+                                    $danhmuc.LoadDanhSach(1);
+                                    $('#CreateOrUpdateModal').modal('hide');
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                }
+                                else {
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                },
+                FileChange: function () {
+                    $modal.find('input[type=file]').on('change', function () {
+                        var file = $(this)[0].files[0]
+                        if (file) {
+                            if (file.size > 2 * 1024 * 1024) {
+                                $msgDialog.confirm("orange", null, "Ảnh tải lên không vượt quá 2MB", null, null, null);
+                                $(this).val('').trigger('change');
+                                return false;
+                            }
+                        }
+                    })
+                }
+            };
+            $updateModal.init();
         });
     </script>
 }

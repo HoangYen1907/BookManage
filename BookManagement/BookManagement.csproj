@@ -27,6 +27,9 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Nancy" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,6 +67,9 @@
     <None Include="wwwroot\font-awesome\scss\_screen-reader.scss" />
     <None Include="wwwroot\font-awesome\scss\_stacked.scss" />
     <None Include="wwwroot\font-awesome\scss\_variables.scss" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1\external\jquery\jquery.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1\jquery-ui.js" />
+    <None Include="wwwroot\lib\jquery-ui-1.12.1\jquery-ui.min.js" />
     <None Include="wwwroot\Scripts\Common\Ajax-config.js" />
     <None Include="wwwroot\Scripts\Common\Message.js" />
   </ItemGroup>

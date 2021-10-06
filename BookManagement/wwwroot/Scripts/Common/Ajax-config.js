@@ -242,16 +242,16 @@
         xhr = xhr || 'Lỗi không xác định :( !';
         let statusCode = xhr.status;
         if (statusCode + '' == 'undefined') {
-            /*$MessageBox.confirm(400, null, xhr, null, null, null);*/
+            $MessageBox.confirm(400, null, xhr, null, null, null);
             return false;
         }
         let getCodeType = (statusCode + $String.Empty).substring(0, 1) + "xx";
         let Description = '';// '<div style="position: relative;border-top: 1px solid #ccc;margin-top: 12px;"><div style="position: absolute;top: -12px;padding-right: 10px;background-color: #fff;font-weight: bold;">Bạn gặp lỗi bởi vì:</div></div><br/>';
         Description += statusCode + ": " + this.propErrorCode[getCodeType].name + ", " + this.propErrorCode[getCodeType].Description + ', ' + xhr.statusText;
-        /*$MessageBox.confirm2(null, Description, "red", null, null, null);*/
+        $MessageBox.confirm2(null, Description, "red", null, null, null);
     },
     CatchRedirection: function (container) {
         container = container || null;
-        /*$MessageBox.confirm(BoxType.Redirection, '<i class="fa fa-ban"></i> THÔNG BÁO', "Truy cập chức năng không hợp lệ, nguyên nhân sau đây:<br/>- Bạn không có quyền thực hiện. Liên hệ quản trị để được cấp quyền.<br/>- Hết phiên làm việc, vui lòng kiểm tra lại. Xin cảm ơn!", container, null, null);*/
+        $MessageBox.confirm(BoxType.Redirection, '<i class="fa fa-ban"></i> THÔNG BÁO', "Truy cập chức năng không hợp lệ, nguyên nhân sau đây:<br/>- Bạn không có quyền thực hiện. Liên hệ quản trị để được cấp quyền.<br/>- Hết phiên làm việc, vui lòng kiểm tra lại. Xin cảm ơn!", container, null, null);
     }
 };
