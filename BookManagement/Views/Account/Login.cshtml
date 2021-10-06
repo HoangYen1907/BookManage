@@ -1,1 +1,32 @@
-﻿<h1>Login Here</h1>
+﻿@{
+    Layout = "";
+}
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Login</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/font-awesome/css/font-awesome.min.css" />
+</head>
+<body>
+    <div class="container" style="border: 1px solid #c2bfbf; width:500px; margin-top:100px; border-radius:10px;">
+        <h2 class="text-center" style="margin-top:10px;">Đăng nhập</h2>
+        <div class="">
+            Tên đăng nhập:<span style="color:red">*</span>&nbsp;
+            <input name="UserName" placeholder="Tên đăng nhập" class="form-control" />
+        </div>
+        <div class="">
+            Password:<span style="color:red">*</span>&nbsp;</span>
+            <input type="password" name="Password" placeholder="Mật khẩu" class="form-control" />
+        </div>
+        <div style="text-align:right; margin:10px;">
+            <a asp-area="" asp-controller="Category" asp-action="Index" class="btn btn-primary">Đăng nhập</a>
+        </div>
+    </div>
+    <div class="container" style="width: 500px;">
+        <br /> <br />
+        <h2 class="text-center"><a asp-controller="Home" asp-action="Index">Back to Home</a></h2>
+    </div>
+</body>

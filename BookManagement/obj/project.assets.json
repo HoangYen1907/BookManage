@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.1": {
+      "font-awesome/4.7.0": {
+        "type": "package"
+      },
+      "Font.Awesome/5.15.4": {
+        "type": "package"
+      },
+      "FontAwesome/4.7.0": {
+        "type": "package"
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -1570,6 +1579,102 @@
     }
   },
   "libraries": {
+    "font-awesome/4.7.0": {
+      "sha512": "MCuSOl63d8b9Etn7Jm4FJS1lp8d8W9fGwQ6xu5SqrRu8e/p+FZv2a8W/LguziecV1ZpTqZPamG5nfmZs28SahA==",
+      "type": "package",
+      "path": "font-awesome/4.7.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "content/css/font-awesome.css",
+        "content/css/font-awesome.min.css",
+        "content/fonts/FontAwesome.otf",
+        "content/fonts/fontawesome-webfont.eot",
+        "content/fonts/fontawesome-webfont.svg",
+        "content/fonts/fontawesome-webfont.ttf",
+        "content/fonts/fontawesome-webfont.woff",
+        "content/fonts/fontawesome-webfont.woff2",
+        "font-awesome.4.7.0.nupkg.sha512",
+        "font-awesome.nuspec",
+        "tools/install.ps1"
+      ]
+    },
+    "Font.Awesome/5.15.4": {
+      "sha512": "Okg91rA7RWbd+eKyBNNnvlvzFee7A4yIi0WdTrJMVPos1ntONAVn/m96Ex9qvVXKKiroBZ1vtCXtpFMnHNof1g==",
+      "type": "package",
+      "path": "font.awesome/5.15.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Content/all.css",
+        "Content/Content/all.min.css",
+        "Content/Content/brands.css",
+        "Content/Content/brands.min.css",
+        "Content/Content/fontawesome.css",
+        "Content/Content/fontawesome.min.css",
+        "Content/Content/regular.css",
+        "Content/Content/regular.min.css",
+        "Content/Content/solid.css",
+        "Content/Content/solid.min.css",
+        "Content/Content/svg-with-js.css",
+        "Content/Content/svg-with-js.min.css",
+        "Content/Content/v4-shims.css",
+        "Content/Content/v4-shims.min.css",
+        "Content/Scripts/fontawesome/all.js",
+        "Content/Scripts/fontawesome/all.min.js",
+        "Content/Scripts/fontawesome/brands.js",
+        "Content/Scripts/fontawesome/brands.min.js",
+        "Content/Scripts/fontawesome/conflict-detection.js",
+        "Content/Scripts/fontawesome/conflict-detection.min.js",
+        "Content/Scripts/fontawesome/fontawesome.js",
+        "Content/Scripts/fontawesome/fontawesome.min.js",
+        "Content/Scripts/fontawesome/regular.js",
+        "Content/Scripts/fontawesome/regular.min.js",
+        "Content/Scripts/fontawesome/solid.js",
+        "Content/Scripts/fontawesome/solid.min.js",
+        "Content/Scripts/fontawesome/v4-shims.js",
+        "Content/Scripts/fontawesome/v4-shims.min.js",
+        "Content/webfonts/fa-brands-400.eot",
+        "Content/webfonts/fa-brands-400.svg",
+        "Content/webfonts/fa-brands-400.ttf",
+        "Content/webfonts/fa-brands-400.woff",
+        "Content/webfonts/fa-brands-400.woff2",
+        "Content/webfonts/fa-regular-400.eot",
+        "Content/webfonts/fa-regular-400.svg",
+        "Content/webfonts/fa-regular-400.ttf",
+        "Content/webfonts/fa-regular-400.woff",
+        "Content/webfonts/fa-regular-400.woff2",
+        "Content/webfonts/fa-solid-900.eot",
+        "Content/webfonts/fa-solid-900.svg",
+        "Content/webfonts/fa-solid-900.ttf",
+        "Content/webfonts/fa-solid-900.woff",
+        "Content/webfonts/fa-solid-900.woff2",
+        "font.awesome.5.15.4.nupkg.sha512",
+        "font.awesome.nuspec"
+      ]
+    },
+    "FontAwesome/4.7.0": {
+      "sha512": "n4H/brfszElyoZ4kmGh8E75uqvLzLvFr3h2PFVdPH1LwUmWIpeqdaW2pcC4oZAhg7sESyObh0IZpAI8COCNeUg==",
+      "type": "package",
+      "path": "fontawesome/4.7.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Content/Content/font-awesome.css",
+        "Content/Content/font-awesome.min.css",
+        "Content/fonts/FontAwesome.otf",
+        "Content/fonts/fontawesome-webfont.eot",
+        "Content/fonts/fontawesome-webfont.svg",
+        "Content/fonts/fontawesome-webfont.ttf",
+        "Content/fonts/fontawesome-webfont.woff",
+        "Content/fonts/fontawesome-webfont.woff2",
+        "fontawesome.4.7.0.nupkg.sha512",
+        "fontawesome.nuspec",
+        "tools/install.ps1"
+      ]
+    },
     "Humanizer.Core/2.8.26": {
       "sha512": "OiKusGL20vby4uDEswj2IgkdchC1yQ6rwbIkZDVBPIR6al2b7n3pC91elBul9q33KaBgRKhbZH3+2Ur4fnWx2A==",
       "type": "package",
@@ -5896,11 +6001,14 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
+      "Font.Awesome >= 5.15.4",
+      "FontAwesome >= 4.7.0",
       "Microsoft.AspNetCore.Razor >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Runtime >= 2.2.0",
       "Microsoft.EntityFrameworkCore >= 5.0.10",
       "Microsoft.EntityFrameworkCore.SqlServer >= 5.0.10",
-      "Microsoft.EntityFrameworkCore.Tools >= 5.0.10"
+      "Microsoft.EntityFrameworkCore.Tools >= 5.0.10",
+      "font-awesome >= 4.7.0"
     ]
   },
   "packageFolders": {
@@ -5909,11 +6017,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj",
+      "projectUniqueName": "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj",
       "projectName": "BookManagement",
-      "projectPath": "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj",
+      "projectPath": "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "D:\\VS_Net2\\BookManagement\\BookManagement\\obj\\",
+      "outputPath": "D:\\VS_Net2\\BookManage\\BookManagement\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -5942,6 +6050,14 @@
       "netcoreapp3.1": {
         "targetAlias": "netcoreapp3.1",
         "dependencies": {
+          "Font.Awesome": {
+            "target": "Package",
+            "version": "[5.15.4, )"
+          },
+          "FontAwesome": {
+            "target": "Package",
+            "version": "[4.7.0, )"
+          },
           "Microsoft.AspNetCore.Razor": {
             "target": "Package",
             "version": "[2.2.0, )"
@@ -5963,6 +6079,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[5.0.10, )"
+          },
+          "font-awesome": {
+            "target": "Package",
+            "version": "[4.7.0, )"
           }
         },
         "imports": [

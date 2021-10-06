@@ -6,41 +6,71 @@
     <title>@ViewData["Title"] - Book</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/font-awesome/css/font-awesome.min.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Book</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">3HYQBook</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse menu1">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class="fa fa-home">&nbsp;Trang chủ</i></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Giới thiệu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Truyện mới cập nhật</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Truyện đã hoàn thành</a>
+                        </li>
+                        <li class="nav-item">
+                            <div class="dropdown show">
+                                <a class="btn dropdown-toggle cat" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list">&nbsp;Thể loại</i></a>
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                    <a class="dropdown-item" href="#">Truyện trinh thám</a>
+                                    <a class="dropdown-item" href="#">Truyện kinh dị</a>
+                                    <a class="dropdown-item" href="#">Khoa học viễn tưởng</a>
+                                </div>
+                            </div>
                         </li>
                     </ul>
                 </div>
+                <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary"><i class="fa fa-user">&nbsp;Admin Login</i></a>
             </div>
         </nav>
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="row">
+                <div class="col-8">@RenderBody()</div>
+                <div class="col-4">
+                    <div class="float-right frame-header">
+                        <br />
+                        <input placeholder="Tìm kiếm ..." name="Keyword"/>
+                        <button type="button" class="btn btn-primary btnSearch"><i class="fa fa-search">&nbsp;Tìm kiếm</i></button>
+                    </div>
+                    <div style="clear:right;">
+                        <br />
+                        <p>Hình ảnh Quảng cáo</p>
+                        <p>Hình ảnh Quảng cáo</p>
+                        <p>Hình ảnh Quảng cáo</p>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - Book - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2021 - 3HYQBook
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

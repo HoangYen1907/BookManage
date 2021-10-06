@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj": {}
+    "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj": {}
   },
   "projects": {
-    "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj": {
+    "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj",
+        "projectUniqueName": "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj",
         "projectName": "BookManagement",
-        "projectPath": "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj",
+        "projectPath": "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\VS_Net2\\BookManagement\\BookManagement\\obj\\",
+        "outputPath": "D:\\VS_Net2\\BookManage\\BookManagement\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "Font.Awesome": {
+              "target": "Package",
+              "version": "[5.15.4, )"
+            },
+            "FontAwesome": {
+              "target": "Package",
+              "version": "[4.7.0, )"
+            },
             "Microsoft.AspNetCore.Razor": {
               "target": "Package",
               "version": "[2.2.0, )"
@@ -61,6 +69,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[5.0.10, )"
+            },
+            "font-awesome": {
+              "target": "Package",
+              "version": "[4.7.0, )"
             }
           },
           "imports": [

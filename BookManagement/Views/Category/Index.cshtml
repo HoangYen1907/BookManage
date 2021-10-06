@@ -1,36 +1,41 @@
 ﻿@{
-    Layout = "_Layout_Manage";
+    Layout = "_LayoutManage";
     ViewBag.Title = "";
-
 }
+
 <div class="card">
     <div class="card-header">
         <div class="float-left">
-            <button type="button" class="btn btn-primary btnAddNew" data-toggle="modal" data-target="#CreateOrUpdateModal"><i class="fa fa-plus">Thêm mới</i></button>
+            <button type="button" class="btn btn-primary btnAddNew" data-toggle="modal" data-target="#CreateOrUpdateModal"><i class="fa fa-plus">&nbsp;Thêm mới</i></button>
         </div>
         <div class="float-right frame-header">
             <input placeholder="Tìm kiếm ..." name="Keyword" />
-            <button type="button" class="btn btn-primary btnSearch"><i class="fa fa-search">Tìm kiếm</i></button>
+            <button type="button" class="btn btn-primary btnSearch"><i class="fa fa-search">&nbsp;Tìm kiếm</i></button>
         </div>
     </div>
     <div class="card-body">
-        <div>
-            Số bản ghi/trang:&nbsp;
-            <select name="ValuePage">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">30</option>
-                <option value="100">40</option>
-            </select>
+        <div class="row">
+            <div class="col-10" style="display:none">
+                Số bản ghi/trang:&nbsp;
+                <select name="ValuePage">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">30</option>
+                    <option value="100">40</option>
+                </select>
+            </div>
+            <div class="col-2 text-right">
+                <a asp-controller="Category" asp-action="Index">Back to full List</a>
+            </div>
         </div>
-        <div class="" style="width:100%">
-            <table id="TBLDANHSACH" style="border:solid 1px">
-                <thead>
+        <div class="" style="width:100%; margin-top:10px;">
+            <table id="TBLDANHSACH" class="table table-bordered table-sm">
+                <thead class="thead-light">
                     <tr>
-                        <th class="text-center" style="width:70px;">STT</th>
-                        <th class="text-center" style="width:70px;">#</th>
-                        <th class="text-center" style="width:200px;">Tên thể loại</th>
+                        <th class="text-center" style="width:60px;">STT</th>
+                        <th class="text-center" style="width:230px;">Tên thể loại</th>
                         <th class="text-center" style="width:500px;">Mô tả</th>
+                        <th class="text-center"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,15 +55,15 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-content">
+            <div class="modal-content" style="border:none; margin: 10px auto;">
                 <input name="CategoryId" class="hide" style="display:none" />
                 <div class="">
                     <div class="col-md-3"><span>Tên thể loại:<span style="color:red">*</span>&nbsp;</span></div>
-                    <div class="col-md-9"><input name="CategoryName" placeholder="Tên thể loại" /></div>
+                    <div class="col-md-12"><input name="CategoryName" placeholder="Tên thể loại" class="form-control" /></div>
                 </div>
                 <div class="">
                     <div class="col-sm-3"><span>Mô tả:&nbsp;</span></div>
-                    <div class="col-sm-9">
+                    <div class="col-sm-12">
                         <textarea class="form-control" name="Description" placeholder="Mô tả" rows="4"></textarea>
                     </div>
                 </div>
@@ -71,12 +76,13 @@
     </div>
 </div>
 
+
 @section scripts{
-    @*<script src=""></script>*@
     <script>
+        $modal = $('#CreateOrUpdateModal');
         $(document).ready(function () { //Sau khi load xong html
             function LoadContentSearch(pageNum) {
-                this.Keyword = $('frame-header input[name=Keyword]').val(); //Lấy giá trị của ô input[name=Keyword] : giá trị tìm kiếm
+                this.Keyword = $('input[name=Keyword]').val(); //Lấy giá trị của ô input[name=Keyword] : giá trị tìm kiếm
                 this.ValuePage = $('select[name=ValuePage]').val(); //Lấy giá trị của ô select[name=ValuePage] : số bản ghi trong 1 trang
                 this.PageNum = pageNum //trang số
             }
@@ -86,21 +92,40 @@
                 this.CategoryName = $('input[name=CategoryName]').val();
                 this.Description = $('[name=Description]').val();
             }
+
             var $danhmuc = {
                 init: function () {
                     $danhmuc.LoadDanhSach(1);
+                    $danhmuc.OpenModal();
+                    $danhmuc.CloseModal();
                     $danhmuc.SearchClick();
                     $danhmuc.CreateOrUpdate();
                 },
                 $thisPage: $('.card'),
+                OpenModal: function () {
+                    $modal.on('shown.bs.modal', function () {
+                        let id = ($modal.find('input[name=CategoryId]').val() || 0);
+                        if (id == 0) {
+                            $danhmuc.ResetModal();
+                        }
+                    })
+                },
+                CloseModal: function () {
+                    $modal.on('hidden.bs.modal', function () {
+                        $danhmuc.ResetModal();
+                    })
+                },
+                ResetModal: function () {
+                    $modal.find('input').val("");
+                    $modal.find('textarea').val("");
+                },
                 SearchClick: function () {
                     $danhmuc.$thisPage.find('.btnSearch').off('click').on('click', function () { $danhmuc.LoadDanhSach(1); }); //Sự kiện khi click vào nút có class btnSearch
                 },
                 LoadDanhSach: function (pageNum) {
                     var dataSend = new LoadContentSearch(pageNum);
                     var getResponse = AjaxConfig.sendRequestToServer("/Category/GetList", "GET", dataSend); //Gọi vào controller Category, hàm Getlist, truyền vào DataSend
-                    getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/LichSuTraCuu/GetList", "GET", dataSend);
-                        console.log(response);
+                    getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/Category/GetList", "GET", dataSend);
                         if (response.header.msgType == 200) {
                             $danhmuc.PageCurrent = pageNum;
                             var htmlContent = "";
@@ -116,14 +141,19 @@
                                 var $Item = response.data[i];
                                 htmlContent += '<tr>' +
                                     '<td class="text-center">' + (i + 1) + '</td>' +
-                                    '<td class="text-center"></td>' +
                                     '<td class="text-center">' + ($Item.categoryName || '') + '</td>' +
                                     '<td class="text-center">' + ($Item.description || '') + '</td>' +
+                                    '<td class="text-center">' +
+                                        '<button type="button" class="btn btn-secondary btn-sm btnEdit" style="margin-right: 5px;" data-id="' + $Item.categoryId + '"><i class="fa fa-pencil-square-o">&nbsp;Sửa</i></a>' +
+                                        '<button type="button" class="btn btn-danger btn-sm btnDelete" data-id="' + $Item.categoryId + '"><i class="fa fa-trash-o">&nbsp;Xóa</i></button>' +
+                                    '</td >' +
                                     '</tr>';
                             }
                             htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
                             $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
                             $('.countItem').text(response.data.length);
+                            $danhmuc.DeleteClick();
+                            $danhmuc.EditClick();
                             /*LoadPaginationPage($danhmuc.$thisPage, $danhmuc.LoadDanhSach, response.Body.TotalRowData, response.Body.Data.length, pageNum, valuePage || 100);*/
                         } else {
                             /*$msgDialog.confirm(response.Header.MsgType, null, response.Body.Description, null, null, null);*/
@@ -149,6 +179,51 @@
                                     alert(response.description);
                                     $danhmuc.LoadDanhSach(1);
                                     $('#CreateOrUpdateModal').modal('hide');
+                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                }
+                                else {
+                                    alert(response.description);
+                                    /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                },
+                EditClick: function () {
+                    $('.btnEdit').off('click').on('click', function () {
+                        let id = $(this).data('id');
+                        if (id > 0) {
+                            let dataSend = { "id": id };
+                            var getResponse = AjaxConfig.sendRequestToServer("Category/GetCategory", "GET", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == 200) {
+                                    let item = response.data;
+                                    $('input[name=CategoryId]').val(item.categoryId);
+                                    $('input[name=CategoryName]').val(item.categoryName);
+                                    $('[name=Description]').val(item.description);
+                                    $modal.modal('show');
+                                }
+                                else {
+                                    alert("Thông tin yêu cầu không hợp lệ");
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                },
+                DeleteClick: function () {
+                    $('.btnDelete').off('click').on('click', function () {
+                        let id = $(this).data('id');
+                        if (id > 0) {
+                            let dataSend = { "id": id }; // lấy được id của Category
+                            var getResponse = AjaxConfig.sendRequestToServer("Category/Delete", "GET", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == 200) {
+                                    alert(response.description);
+                                    $danhmuc.LoadDanhSach(1);
                                     /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
                                 }
                                 else {

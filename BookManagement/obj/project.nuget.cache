@@ -1,9 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "F2AGSYFvYw0Ud3PgyBCCL5mniRlnmfBbTd2XFVOVjrTYg/g48P0o+rBuiH/Z832tF+8K65Q+SQ3aJemPBvwVhQ==",
+  "dgSpecHash": "JojRZNgOE4gcCa5vHyLrJ1TzwU9CadQeGVOX/5GXen6zHADmuZSkwKfBCCCNt9ihHoIkzWX5eUVo38L7jabcEQ==",
   "success": true,
-  "projectFilePath": "D:\\VS_Net2\\BookManagement\\BookManagement\\BookManagement.csproj",
+  "projectFilePath": "D:\\VS_Net2\\BookManage\\BookManagement\\BookManagement.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\font-awesome\\4.7.0\\font-awesome.4.7.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\font.awesome\\5.15.4\\font.awesome.5.15.4.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\fontawesome\\4.7.0\\fontawesome.4.7.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
