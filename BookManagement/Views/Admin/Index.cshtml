@@ -25,7 +25,7 @@
                 </select>
             </div>
             <div class="col-2 text-right">
-                <a asp-controller="Admin" asp-action="Index">Back to full List</a>
+                <a asp-controller="Admin" asp-action="Index">Quay lại danh sách</a>
             </div>
         </div>
         <div class="" style="width:100%; margin-top:10px;">
@@ -89,36 +89,17 @@
         }
 
         function Admin() {
-            this.UserID = ($('input[name=UserID]').val() || 0);
-            this.UserName = $('input[name=UserName]').val();
-            this.Email = $('input[name=Email]').val();
-            this.Password = $('input[name=Password]').val();
+            this.userID = ($('input[name=UserID]').val() || 0);
+            this.userName = $('input[name=UserName]').val();
+            this.email = $('input[name=Email]').val();
+            this.password = $('input[name=Password]').val();
         }
         var $danhmuc = {
             init: function () {
                 $danhmuc.LoadDanhSach(1);
-                $danhmuc.OpenModal();
-                $danhmuc.CloseModal();
                 $danhmuc.SearchClick();
-                $danhmuc.CreateOrUpdate();
             },
             $thisPage: $('.card'),
-            OpenModal: function () {
-                $modal.on('shown.bs.modal', function () {
-                    let id = ($modal.find('input[name=UserID]').val() || 0);
-                    if (id == 0) {
-                        $danhmuc.ResetModal();
-                    }
-                })
-            },
-            CloseModal: function () {
-                $modal.on('hidden.bs.modal', function () {
-                    $danhmuc.ResetModal();
-                })
-            },
-            ResetModal: function () {
-                $modal.find('input').val("");
-            },
             SearchClick: function () {
                 $danhmuc.$thisPage.find('.btnSearch').off('click').on('click', function () { $danhmuc.LoadDanhSach(1); }); //Sự kiện khi click vào nút có class btnSearch
             },
@@ -126,7 +107,7 @@
                 var dataSend = new LoadContentSearch(pageNum);
                 var getResponse = AjaxConfig.sendRequestToServer("/Admin/GetList", "GET", dataSend); //Gọi vào controller Admin, hàm Getlist, truyền vào DataSend
                 getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/Admin/GetList", "GET", dataSend);
-                    if (response.header.msgType == 200) {
+                    if (response.header.msgType == BoxType.Success) {
                         $danhmuc.PageCurrent = pageNum;
                         var htmlContent = "";
                         response.data = response.data || [];
@@ -163,40 +144,11 @@
                         $danhmuc.ConfirmClick();
                         /*LoadPaginationPage($danhmuc.$thisPage, $danhmuc.LoadDanhSach, response.Body.TotalRowData, response.Body.Data.length, pageNum, valuePage || 100);*/
                     } else {
-                        /*$msgDialog.confirm(response.Header.MsgType, null, response.Body.Description, null, null, null);*/
+                        $msgDialog.confirm(response.header.msgType, null, response.body.description, null, null, null);
                     }
                 }).catch(function (xhr) {
                     AjaxConfig.CatchError(xhr);
                 });
-            },
-            LoadDataSend: function () {
-                let item = new Admin();
-                if (item.UserName == "" || item.Password == "") { return alert("Vui lòng nhập tên đăng nhập và mật khẩu") };
-                return item;
-            },
-            CreateOrUpdate: function () {
-                $('#CreateOrUpdateModal .btnSave').off('click').on('click', function () {
-                    let dataSend = $danhmuc.LoadDataSend();
-                    if (dataSend) {
-                        let id = ($('input[name=UserID]').val() || 0);
-                        let url = (id == 0 || id == "") ? "/Admin/AddNew" : "/Admin/Update";
-                        var getResponse = AjaxConfig.sendRequestToServer(url, "GET", dataSend);
-                        getResponse.then(function (response) {
-                            if (response.header.msgType == 200) {
-                                alert(response.description);
-                                $danhmuc.LoadDanhSach(1);
-                                $('#CreateOrUpdateModal').modal('hide');
-                                /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
-                            }
-                            else {
-                                alert(response.description);
-                                /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
-                            }
-                        }).catch(function (xhr) {
-                            AjaxConfig.CatchError(xhr);
-                        });
-                    }
-                })
             },
             EditClick: function () {
                 $('.btnEdit').off('click').on('click', function () {
@@ -205,7 +157,7 @@
                         let dataSend = { "id": id };
                         var getResponse = AjaxConfig.sendRequestToServer("Admin/GetAdmin", "GET", dataSend);
                         getResponse.then(function (response) {
-                            if (response.header.msgType == 200) {
+                            if (response.header.msgType == BoxType.Success) {
                                 let item = response.data;
                                 $('input[name=UserID]').val(item.userID);
                                 $('input[name=UserName]').val(item.userName);
@@ -214,7 +166,7 @@
                                 $modal.modal('show');
                             }
                             else {
-                                alert("Thông tin yêu cầu không hợp lệ");
+                                $msgDialog.confirm("orange", null, "Thông tin yêu cầu không hợp lệ", null, null, null);
                             }
                         }).catch(function (xhr) {
                             AjaxConfig.CatchError(xhr);
@@ -226,20 +178,40 @@
                 $('.btnDelete').off('click').on('click', function () {
                     let id = $(this).data('id');
                     if (id > 0) {
-                        let dataSend = { "id": id }; // lấy được id của Category
-                        var getResponse = AjaxConfig.sendRequestToServer("Admin/Delete", "GET", dataSend);
-                        getResponse.then(function (response) {
-                            if (response.header.msgType == 200) {
-                                alert(response.description);
-                                $danhmuc.LoadDanhSach(1);
-                                /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                        $.confirm({
+                            title: 'XÁC NHẬN THÔNG TIN',
+                            content: "Bạn có chắc chắn muốn xóa không?",
+                            type: 'orange',
+                            typeAnimated: true,
+                            columnClass: 'col-md-6 col-md-offset-0',
+                            container: $('.card'),
+                            buttons: {
+                                OK: {
+                                    text: '<i class="fa fa-trash"></i>&nbsp;Xóa',
+                                    btnClass: "btn-primary",
+                                    action: function () {
+                                        let _self = this;
+                                        let dataSend = { "id": id }; // lấy được id của Category
+                                        var getResponse = AjaxConfig.sendRequestToServer("Admin/Delete", "GET", dataSend);
+                                        getResponse.then(function (response) {
+                                            if (response.header.msgType == BoxType.Success) {
+                                                $danhmuc.LoadDanhSach(1);
+                                                $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                            }
+                                            else {
+                                                $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                            }
+                                        }).catch(function (xhr) {
+                                            AjaxConfig.CatchError(xhr);
+                                        });
+                                    }
+                                },
+                                close: {
+                                    text: '<i class="fa fa-close"></i>&nbsp;Đóng',
+                                    action: function () {
+                                    }
+                                }
                             }
-                            else {
-                                alert(response.description);
-                                /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
-                            }
-                        }).catch(function (xhr) {
-                            AjaxConfig.CatchError(xhr);
                         });
                     }
                 })
@@ -251,14 +223,12 @@
                         let dataSend = { "id": id };
                         var getResponse = AjaxConfig.sendRequestToServer("Admin/Confirm", "GET", dataSend);
                         getResponse.then(function (response) {
-                            if (response.header.msgType == 200) {
-                                alert(response.description);
+                            if (response.header.msgType == BoxType.Success) {
                                 $danhmuc.LoadDanhSach(1);
-                                /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
                             }
                             else {
-                                alert(response.description);
-                                /*$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);*/
+                                $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
                             }
                         }).catch(function (xhr) {
                             AjaxConfig.CatchError(xhr);
@@ -267,8 +237,62 @@
                 })
             }
         };
-
         $danhmuc.init();
+
+        var $updateModal = {
+            init: function () {
+                $updateModal.OpenModal();
+                $updateModal.CloseModal();
+                $updateModal.CreateOrUpdate();
+            },
+            OpenModal: function () {
+                $modal.on('shown.bs.modal', function () {
+                    let id = ($modal.find('input[name=UserID]').val() || 0);
+                    if (id == 0) {
+                        $updateModal.ResetModal();
+                    }
+                })
+            },
+            CloseModal: function () {
+                $modal.on('hidden.bs.modal', function () {
+                    $updateModal.ResetModal();
+                })
+            },
+            ResetModal: function () {
+                $modal.find('input').val("");
+            },
+            LoadDataSend: function () {
+                let item = new Admin();
+                if (item.UserName == "" || item.Password == "") {
+                    $msgDialog.confirm("orange", null, "Vui lòng nhập tên đăng nhập và mật khẩu", null, null, null);
+                    return false;
+                };
+                return item;
+            },
+            CreateOrUpdate: function () {
+                $('#CreateOrUpdateModal .btnSave').off('click').on('click', function () {
+                    let dataSend = $updateModal.LoadDataSend();
+                    if (dataSend) {
+                        let id = ($('input[name=UserID]').val() || 0);
+                        let url = (id == 0 || id == "") ? "/Admin/AddNew" : "/Admin/Update";
+                        var getResponse = AjaxConfig.sendRequestToServer(url, "GET", dataSend);
+                        getResponse.then(function (response) {
+                            if (response.header.msgType == BoxType.Success) {
+                                $danhmuc.LoadDanhSach(1);
+                                $('#CreateOrUpdateModal').modal('hide');
+                                $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                            }
+                            else {
+                                $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                            }
+                        }).catch(function (xhr) {
+                            AjaxConfig.CatchError(xhr);
+                        });
+                    }
+                })
+            },
+        };
+        $updateModal.init();
     });
 </script>
 }

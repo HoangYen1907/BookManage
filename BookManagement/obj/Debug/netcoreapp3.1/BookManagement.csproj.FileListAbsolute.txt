@@ -149,10 +149,8 @@ D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Account
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Category\Index.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
-D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\Privacy.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout.cshtml.g.cs
-D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_Layout_Manage.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\_ViewImports.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\_ViewStart.cshtml.g.cs
@@ -166,3 +164,10 @@ D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\BookManagement.genr
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Book\Index.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutManage.cshtml.g.cs
+D:\VS_Net2\BookManage\BookManagement\bin\Debug\netcoreapp3.1\Microsoft.DotNet.PlatformAbstractions.dll
+D:\VS_Net2\BookManage\BookManagement\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyModel.dll
+D:\VS_Net2\BookManage\BookManagement\bin\Debug\netcoreapp3.1\Microsoft.Extensions.PlatformAbstractions.dll
+D:\VS_Net2\BookManage\BookManagement\bin\Debug\netcoreapp3.1\Nancy.dll
+D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\GioiThieu.cshtml.g.cs
+D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\NDChuong.cshtml.g.cs
+D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\NDSach.cshtml.g.cs

@@ -23,7 +23,17 @@ namespace BookManagement.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult GioiThieu()
+        {
+            return View();
+        }
+
+        public IActionResult NDSach()
+        {
+            return View();
+        }
+
+        public IActionResult NDChuong()
         {
             return View();
         }

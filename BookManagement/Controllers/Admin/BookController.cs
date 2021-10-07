@@ -38,7 +38,7 @@ namespace BookManagement.Controllers.Admin
                     return Json(msg);
                 }
                 List<int> lstCategory = _db.BookCategories.Where(x => x.BookId == id).Select(x=>x.CategoryId).ToList();
-                msg.Data = new { result.BookId, result.BookName, result.Author, result.BookImage, result.Description, LstCate = lstCategory};
+                msg.Data = new { result.BookId, result.BookName, result.Author, result.TotalChapter, result.BookImage, result.Description, LstCate = lstCategory};
                 msg.Header.MsgType = MessageType.Success;
                 return Json(msg);
             }

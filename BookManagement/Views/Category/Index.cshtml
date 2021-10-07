@@ -25,7 +25,7 @@
                 </select>
             </div>
             <div class="col-2 text-right">
-                <a asp-controller="Category" asp-action="Index">Back to full List</a>
+                <a asp-controller="Category" asp-action="Index">Quay lại danh sách</a>
             </div>
         </div>
         <div class="" style="width:100%; margin-top:10px;">
@@ -88,37 +88,17 @@
             }
 
             function Category() {
-                this.CategoryId = ($('input[name=CategoryId]').val() || 0);
-                this.CategoryName = $('input[name=CategoryName]').val();
-                this.Description = $('[name=Description]').val();
+                this.categoryId = ($('input[name=CategoryId]').val() || 0);
+                this.categoryName = $('input[name=CategoryName]').val();
+                this.description = $('[name=Description]').val();
             }
 
             var $danhmuc = {
                 init: function () {
                     $danhmuc.LoadDanhSach(1);
-                    $danhmuc.OpenModal();
-                    $danhmuc.CloseModal();
                     $danhmuc.SearchClick();
-                    $danhmuc.CreateOrUpdate();
                 },
                 $thisPage: $('.card'),
-                OpenModal: function () {
-                    $modal.on('shown.bs.modal', function () {
-                        let id = ($modal.find('input[name=CategoryId]').val() || 0);
-                        if (id == 0) {
-                            $danhmuc.ResetModal();
-                        }
-                    })
-                },
-                CloseModal: function () {
-                    $modal.on('hidden.bs.modal', function () {
-                        $danhmuc.ResetModal();
-                    })
-                },
-                ResetModal: function () {
-                    $modal.find('input').val("");
-                    $modal.find('textarea').val("");
-                },
                 SearchClick: function () {
                     $danhmuc.$thisPage.find('.btnSearch').off('click').on('click', function () { $danhmuc.LoadDanhSach(1); }); //Sự kiện khi click vào nút có class btnSearch
                 },
@@ -156,38 +136,11 @@
                             $danhmuc.EditClick();
                             /*LoadPaginationPage($danhmuc.$thisPage, $danhmuc.LoadDanhSach, response.Body.TotalRowData, response.Body.Data.length, pageNum, valuePage || 100);*/
                         } else {
-                            $msgDialog.confirm(response.Header.MsgType, null, response.Body.Description, null, null, null);
+                            $msgDialog.confirm(response.header.msgType, null, response.body.description, null, null, null);
                         }
                     }).catch(function (xhr) {
                         AjaxConfig.CatchError(xhr);
                     });
-                },
-                LoadDataSend: function () {
-                    let item = new Category();
-                    if (item.CategoryName == "") { return alert("Vui lòng nhập tên thể loại") };
-                    return item;
-                },
-                CreateOrUpdate: function () {
-                    $('#CreateOrUpdateModal .btnSave').off('click').on('click', function () {
-                        let dataSend = $danhmuc.LoadDataSend();
-                        if (dataSend) {
-                            let id = ($('input[name=CategoryId]').val() || 0);
-                            let url = (id == 0 || id == "") ? "/Category/AddNew" : "/Category/Update";
-                            var getResponse = AjaxConfig.sendRequestToServer(url, "GET", dataSend);
-                            getResponse.then(function (response) {
-                                if (response.header.msgType == BoxType.Success) {
-                                    $danhmuc.LoadDanhSach(1);
-                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
-                                    $('#CreateOrUpdateModal').modal('hide');
-                                }
-                                else {
-                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
-                                }
-                            }).catch(function (xhr) {
-                                AjaxConfig.CatchError(xhr);
-                            });
-                        }
-                    })
                 },
                 EditClick: function () {
                     $('.btnEdit').off('click').on('click', function () {
@@ -204,7 +157,7 @@
                                     $modal.modal('show');
                                 }
                                 else {
-                                    alert("Thông tin yêu cầu không hợp lệ");
+                                    $msgDialog.confirm("orange", null, "Thông tin yêu cầu không hợp lệ", null, null, null);
                                 }
                             }).catch(function (xhr) {
                                 AjaxConfig.CatchError(xhr);
@@ -255,8 +208,64 @@
                     })
                 }
             };
-
             $danhmuc.init();
+
+            var $updateModal = {
+                init: function () {
+                    $updateModal.OpenModal();
+                    $updateModal.CloseModal();
+                    $updateModal.CreateOrUpdate();
+                    $updateModal.FileChange();
+                },
+                OpenModal: function () {
+                    $modal.on('shown.bs.modal', function () {
+                        let id = ($modal.find('input[name=CategoryId]').val() || 0);
+                        if (id == 0) {
+                            $updateModal.ResetModal();
+                        }
+                    })
+                },
+                CloseModal: function () {
+                    $modal.on('hidden.bs.modal', function () {
+                        $updateModal.ResetModal();
+                    })
+                },
+                ResetModal: function () {
+                    $modal.find('input').val("");
+                    $modal.find('textarea').val("");
+                },
+                LoadDataSend: function () {
+                    let item = new Category();
+                    if (item.CategoryName == "") {
+                        $msgDialog.confirm("orange", null, "Vui lòng nhập tên thể loại", null, null, null);
+                        return false;
+                    };
+                    return item;
+                },
+                CreateOrUpdate: function () {
+                    $('#CreateOrUpdateModal .btnSave').off('click').on('click', function () {
+                        let dataSend = $updateModal.LoadDataSend();
+                        if (dataSend) {
+                            let id = ($('input[name=CategoryId]').val() || 0);
+                            let url = (id == 0 || id == "") ? "/Category/AddNew" : "/Category/Update";
+                            var getResponse = AjaxConfig.sendRequestToServer(url, "GET", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == BoxType.Success) {
+                                    $danhmuc.LoadDanhSach(1);
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                    $('#CreateOrUpdateModal').modal('hide');
+                                }
+                                else {
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                },
+            };
+            $updateModal.init();
         });
 
     </script>
