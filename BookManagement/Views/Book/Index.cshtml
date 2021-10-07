@@ -137,6 +137,7 @@
                 //image
                 //this.image = "";
                 this.description = $('[name=Description]').val();
+                this.isCompleted = false;
                 //category
             }
             var $danhmuc = {
@@ -152,7 +153,6 @@
                     var dataSend = new LoadContentSearch(pageNum);
                     var getResponse = AjaxConfig.sendRequestToServer("/Book/GetList", "GET", dataSend); //Gọi vào controller Category, hàm Getlist, truyền vào DataSend
                     getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/Category/GetList", "GET", dataSend);
-                        //console.log(response);
                         if (response.header.msgType == BoxType.Success) {
                             $danhmuc.PageCurrent = pageNum;
                             var htmlContent = "";
@@ -216,7 +216,7 @@
                                     $modal.modal('show');
                                 }
                                 else {
-                                    alert("Thông tin yêu cầu không hợp lệ");
+                                    $msgDialog.confirm("orange", null, "Thông tin yêu cầu không hợp lệ", null, null, null);
                                 }
                             }).catch(function (xhr) {
                                 AjaxConfig.CatchError(xhr);
@@ -298,7 +298,7 @@
                     let dataForm = new FormData();
                     let item = new Book();
                     if (item.BookName == "") {
-                        alert("Vui lòng nhập tên sách");
+                        $msgDialog.confirm("orange", null, "Vui lòng nhập tên sách", null, null, null);
                         return false;
                     };
                     dataForm.append('generalInfo', JSON.stringify(item));
@@ -319,8 +319,8 @@
                             getResponse.then(function (response) {
                                 if (response.header.msgType == BoxType.Success) {
                                     $danhmuc.LoadDanhSach(1);
-                                    $('#CreateOrUpdateModal').modal('hide');
                                     $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                    $('#CreateOrUpdateModal').modal('hide');
                                 }
                                 else {
                                     $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);

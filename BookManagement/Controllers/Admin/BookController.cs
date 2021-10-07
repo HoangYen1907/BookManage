@@ -86,6 +86,12 @@ namespace BookManagement.Controllers.Admin
                 msg.Data = "BookName";
                 return msg;
             }
+            if (Item.TotalChapter < 1)
+            {
+                msg.Description = "Vui lòng nhập số chương lớn hơn 0";
+                msg.Data = "BookName";
+                return msg;
+            }
             var Exsits = _db.Books.Where(x => x.BookId != Item.BookId && x.BookName.ToLower().Trim() == Item.BookName.ToLower().Trim()).FirstOrDefault();
             if (Exsits != null)
             {

@@ -279,8 +279,8 @@
                         getResponse.then(function (response) {
                             if (response.header.msgType == BoxType.Success) {
                                 $danhmuc.LoadDanhSach(1);
-                                $('#CreateOrUpdateModal').modal('hide');
                                 $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                $('#CreateOrUpdateModal').modal('hide');
                             }
                             else {
                                 $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
