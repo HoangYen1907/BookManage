@@ -48,20 +48,21 @@ namespace BookManagement.Controllers.Admin
         }
 
         [HttpGet]
-        public JsonResult GetList(SearchDto Item)
+        public JsonResult GetList(int bookId = 0)
         {
             Message msg = new Message();
             try
             {
                 msg.Header.MsgType = MessageType.ClientError;
-                var keyword = string.IsNullOrEmpty(Item.Keyword) ? "" : Item.Keyword.Trim();
-                var result = _db.Chapters.Where(x => x.ChapterName.Contains(keyword));
+                //var keyword = string.IsNullOrEmpty(Item.Keyword) ? "" : Item.Keyword.Trim();
+                //var result = _db.Chapters.Where(x => x.ChapterName.Contains(keyword));
+
+                var result = _db.Chapters.Where(x => x.BookId == bookId).OrderBy(x=>x.ChapterId);
 
                 msg.TotalRowData = result.Count();
                 //Skip(n): Bỏ qua n bản ghi tìm được sau khi sắp xếp;
                 //Take(n): Lấy n bản ghi sau khi sắp xếp
-                result = result.OrderBy(x => x.ChapterName);
-                msg.Data = result.Select(x => new { x.ChapterId, x.BookId, x.ChapterName, x.Content }).ToList();
+                msg.Data = result.Select(x => new { x.ChapterId, x.TotalView, x.ChapterName }).ToList();
                 msg.Header.MsgType = MessageType.Success;
                 return Json(msg);
             }
@@ -100,7 +101,7 @@ namespace BookManagement.Controllers.Admin
                 {
                     return Json(checkValid);
                 }
-
+                Item.TotalView = 0;
                 Item.CreateTime = DateTime.Now;
                 _db.Chapters.Add(Item);
                 _db.SaveChanges();

@@ -88,10 +88,8 @@
                 </div>
                 <div class="">
                     <div class="col-md-3"><span>Hình ảnh:&nbsp;</span></div>
+                    <div class="col-md-3" style="display:none"><img name="Avatar" src="#" alt="ảnh" width="150px" height="200px" style="margin: 5px 0px;"/></div>
                     <div class="col-md-3"><input type="file" name="BookImage" placeholder="Hình ảnh" class="form-control-file" accept="image/*"/></div>
-                    <div>
-                        <img src="#" alt="" />
-                    </div>
                 </div>
                 <div class="">
                     <div class="col-sm-3"><span>Mô tả:&nbsp;</span></div>
@@ -102,6 +100,70 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary btnSave">Lưu lại</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" data-backdrop="static" id="Chapter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title inline-block" id="exampleModalLabel"><i class='fa fa-list-alt' aria-hidden='true'></i>&nbsp;Quản lý thông tin chương</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-content container" style="border:none; margin: 10px auto;">
+                <div class="float-left">
+                    <button type="button" class="btn btn-primary btnAddNewChapter" data-toggle="modal" data-target="#CreateOrUpdateChapter"><i class="fa fa-plus">&nbsp;Thêm mới</i></button>
+                </div>
+                <div class="" style="width:100%; margin-top:10px;">
+                    <input name="BookId" style="display:none" />
+                    <table id="TBLDANHSACHCHAPTER" class="table table-bordered table-sm">
+                        <thead class="thead-light">
+                            <tr>
+                                <th class="text-center" style="width:50px;">STT</th>
+                                <th class="text-center" style="width:270px;">Tên chương</th>
+                                <th class="text-center" style="width:200px;">Số lượt xem</th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" data-backdrop="static" id="CreateOrUpdateChapter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title inline-block" id="exampleModalLabel"><i class='fa fa-list-alt' aria-hidden='true'></i>&nbsp;Cập nhật thông tin chương</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-content" style="border:none; margin: 10px auto;">
+                <input name="ChapterId" class="hide" style="display:none" />
+                <div class="">
+                    <div class="col-md-3"><span>Tên chương:<span style="color:red">*</span>&nbsp;</span></div>
+                    <div class="col-md-12"><input name="ChapterName" placeholder="Tên chương" class="form-control" /></div>
+                </div>
+                <div class="">
+                    <div class="col-md-3"><span>Nội dung:&nbsp;</span></div>
+                    <div class="col-md-12"><textarea name="Content" placeholder="Nội dung" class="form-control" rows="30" ></textarea></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btnSaveChapter">Lưu lại</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
             </div>
         </div>
@@ -133,13 +195,21 @@
                 this.bookId = ($('input[name=BookId]').val() || 0);
                 this.bookName = $('input[name=BookName]').val();
                 this.author = $('input[name=Author]').val();
-                this.totalChapter = $('input[name=TotalChapter]').val();
+                this.totalChapter = ($('input[name=TotalChapter]').val() || 1);
                 //image
                 //this.image = "";
                 this.description = $('[name=Description]').val();
                 this.isCompleted = false;
                 //category
             }
+
+            function Chapter() {
+                this.ChapterId = ($('input[name=ChapterId]').val() || 0);
+                this.ChapterName = $('input[name=ChapterName]').val();
+                this.BookId = $chapterModal.Self.find('input[name=BookId]').val();
+                this.Content = $('[name=Content]').val();
+            }
+
             var $danhmuc = {
                 init: function () {
                     $danhmuc.LoadDanhSach(1);
@@ -172,8 +242,9 @@
                                     '<td class="text-center">' + ($Item.author || '') + '</td>' +
                                     '<td class="text-center">' + ($Item.description || '') + '</td>' +
                                     '<td class="text-center">' +
+                                        '<button type="button" class="btn btn-primary btn-sm btnChapter" style="margin-right: 5px;" data-id="' + $Item.bookId + '"><i class="fa fa-list-ul">&nbsp;Chương</i></button>' +
                                         '<button type="button" class="btn btn-secondary btn-sm btnEdit" style="margin-right: 5px;" data-id="' + $Item.bookId + '"><i class="fa fa-pencil-square-o">&nbsp;Sửa</i></button>' +
-                                        '<button type="button" class="btn btn-danger btn-sm btnDelete" data-id="' + $Item.bookId + '"><i class="fa fa-trash-o">&nbsp;Xóa</i></button>' +
+                                        '<button type="button" class="btn btn-danger btn-sm btnDelete" style="margin-top: 5px;" data-id="' + $Item.bookId + '"><i class="fa fa-trash-o">&nbsp;Xóa</i></button>' +
                                     '</td >' +
                                     '</tr>';
                             }
@@ -182,6 +253,7 @@
                             $('.countItem').text(response.data.length);
                             $danhmuc.DeleteClick();
                             $danhmuc.EditClick();
+                            $danhmuc.ChapterClick();
                             /*LoadPaginationPage($danhmuc.$thisPage, $danhmuc.LoadDanhSach, response.Body.TotalRowData, response.Body.Data.length, pageNum, valuePage || 100);*/
                         } else {
                             $msgDialog.confirm(response.header.msgType, null, response.body.description, null, null, null);
@@ -205,7 +277,10 @@
                                     $('input[name=Author]').val(item.author);
                                     $('input[name=TotalChapter]').val(item.totalChapter);
                                     //image
-                                    
+                                    if (item.bookImage != null) {
+                                        $('img[name=Avatar]').attr('src', item.bookImage);
+                                        $('img[name=Avatar]').parent().css('display', 'block');
+                                    }
                                     $('[name=Description]').val(item.description);
                                     //category
                                     for (let cateId of lstCate) {
@@ -265,9 +340,18 @@
                             });
                         }
                     })
-                }
+                },
+                ChapterClick: function () {
+                    $('.btnChapter').off('click').on('click', function () {
+                        let id = $(this).data('id');
+                        if (id > 0) {
+                            $chapterModal.LoadDanhSachChapter(id);
+                        }
+                    })
+                },
             };
             $danhmuc.init();
+
 
             var $updateModal = {
                 init: function () {
@@ -293,6 +377,8 @@
                     $modal.find('input').not('[type=checkbox]').val("");
                     $modal.find('input[type=checkbox]').prop('checked', false);
                     $modal.find('textarea').val("");
+                    $('img[name=Avatar]').attr('src', '#');
+                    $('img[name=Avatar]').parent().css('display', 'none');
                 },
                 LoadDataSend: function () {
                     let dataForm = new FormData();
@@ -340,11 +426,184 @@
                                 $(this).val('').trigger('change');
                                 return false;
                             }
+                            $('img[name=Avatar]').attr('src', '#');
+                            $('img[name=Avatar]').parent().css('display', 'none');
                         }
                     })
                 }
             };
             $updateModal.init();
+
+            var $chapterModal = {
+                Self: $('#Chapter'),
+                LoadDanhSachChapter: function (bookId) {
+                    let dataSend = { "bookId": bookId };
+                    var getResponse = AjaxConfig.sendRequestToServer("Chapter/GetList", "GET", dataSend);
+                    getResponse.then(function (response) {
+                        if (response.header.msgType == BoxType.Success) {
+                            $chapterModal.Self.find('input[name=BookId]').val(bookId);
+                            var htmlContent = "";
+                            response.data = response.data || [];
+                            if (response.data.length == 0) {
+                                htmlContent = '<tr><td colspan="10" class="text-center">Không có dữ liệu.</td></tr>';
+                                $chapterModal.Self.find('table#TBLDANHSACHCHAPTER tbody').html(htmlContent);
+                                $('.countItem').text(response.data.length);
+                                $('.pagination-page').html('');
+                                $chapterModal.Self.modal('show');
+                                return false;
+                            }
+                            for (var i = 0; i < response.data.length; i++) {
+                                var $Item = response.data[i];
+                                htmlContent += '<tr>' +
+                                    '<td class="text-center">' + (i + 1) + '</td>' +
+                                    '<td class="text-center">' + ($Item.chapterName || '') + '</td>' +
+                                    '<td class="text-center">' + ($Item.totalView || '0') + '</td>' +
+                                    '<td class="text-center">' +
+                                    '<button type="button" class="btn btn-secondary btn-sm btnEditChapter" style="margin-right: 5px;" data-id="' + $Item.chapterId + '"><i class="fa fa-pencil-square-o">&nbsp;Sửa</i></button>' +
+                                    '<button type="button" class="btn btn-danger btn-sm btnDeleteChapter" data-id="' + $Item.chapterId + '"><i class="fa fa-trash-o">&nbsp;Xóa</i></button>' +
+                                    '</td >' +
+                                    '</tr>';
+                            }
+                            htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
+                            $chapterModal.Self.find('table#TBLDANHSACHCHAPTER tbody').html(htmlContent);
+                            $('.countItem').text(response.data.length);
+                            $chapterModal.DeleteClick();
+                            $chapterModal.EditClick();
+                            $chapterModal.Self.modal('show');
+                        }
+                        else {
+                            $msgDialog.confirm(response.header.msgType, null, response.body.description, null, null, null);
+                        }
+                    }).catch(function (xhr) {
+                        AjaxConfig.CatchError(xhr);
+                    });
+                },
+                EditClick: function () {
+                    $('.btnEditChapter').off('click').on('click', function () {
+                        let id = $(this).data('id');
+                        if (id > 0) {
+                            let dataSend = { "id": id };
+                            var getResponse = AjaxConfig.sendRequestToServer("Chapter/GetChapter", "GET", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == BoxType.Success) {
+                                    let item = response.data;
+                                    $updateChapterModal.Self.find('input[name=ChapterId]').val(item.chapterId);
+                                    $updateChapterModal.Self.find('input[name=ChapterName]').val(item.chapterName);
+                                    $updateChapterModal.Self.find('[name=Content]').val(item.content);
+                                    $updateChapterModal.Self.modal('show');
+                                }
+                                else {
+                                    $msgDialog.confirm("orange", null, "Thông tin yêu cầu không hợp lệ", null, null, null);
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                },
+                DeleteClick: function () {
+                    $('.btnDeleteChapter').off('click').on('click', function () {
+                        let id = $(this).data('id');
+                        if (id > 0) {
+                            $.confirm({
+                                title: 'XÁC NHẬN THÔNG TIN',
+                                content: "Bạn có chắc chắn muốn xóa không?",
+                                type: 'orange',
+                                typeAnimated: true,
+                                columnClass: 'col-md-6 col-md-offset-0',
+                                container: $('.card'),
+                                buttons: {
+                                    OK: {
+                                        text: '<i class="fa fa-trash"></i>&nbsp;Xóa',
+                                        btnClass: "btn-primary",
+                                        action: function () {
+                                            let _self = this;
+                                            let dataSend = { "id": id };
+                                            var getResponse = AjaxConfig.sendRequestToServer("Chapter/Delete", "GET", dataSend);
+                                            getResponse.then(function (response) {
+                                                if (response.header.msgType == BoxType.Success) {
+                                                    let bookId = $chapterModal.Self.find('input[name=BookId]').val();
+                                                    $chapterModal.LoadDanhSachChapter(bookId);
+                                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                                }
+                                                else {
+                                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                                }
+                                            }).catch(function (xhr) {
+                                                AjaxConfig.CatchError(xhr);
+                                            });
+                                        }
+                                    },
+                                    close: {
+                                        text: '<i class="fa fa-close"></i>&nbsp;Đóng',
+                                        action: function () {
+                                        }
+                                    }
+                                }
+                            });
+                        }
+                    })
+                },
+            }
+            
+
+            var $updateChapterModal = {
+                init: function () {
+                    $updateChapterModal.OpenModal();
+                    $updateChapterModal.CloseModal();
+                    $updateChapterModal.CreateOrUpdate();
+                },
+                Self: $('#CreateOrUpdateChapter'),
+                OpenModal: function () {
+                    $updateChapterModal.Self.on('shown.bs.modal', function () {
+                        let id = ($updateChapterModal.Self.find('input[name=ChapterId]').val() || 0);
+                        if (id == 0) {
+                            $updateChapterModal.ResetModal();
+                        }
+                    })
+                },
+                CloseModal: function () {
+                    $updateChapterModal.Self.on('hidden.bs.modal', function () {
+                        $updateChapterModal.ResetModal();
+                    })
+                },
+                ResetModal: function () {
+                    $updateChapterModal.Self.find('input').val("");
+                    $updateChapterModal.Self.find('textarea').val("");
+                },
+                LoadDataSend: function () {
+                    let item = new Chapter();
+                    if (item.ChapterName == "") {
+                        $msgDialog.confirm("orange", null, "Vui lòng nhập tên chương", null, null, null);
+                        return false;
+                    };
+                    return item;
+                },
+                CreateOrUpdate: function () {
+                    $updateChapterModal.Self.find('.btnSaveChapter').off('click').on('click', function () {
+                        let dataSend = $updateChapterModal.LoadDataSend();
+                        if (dataSend) {
+                            let id = ($updateChapterModal.Self.find('input[name=ChapterId]').val() || 0);
+                            let url = (id == 0 || id == "") ? "/Chapter/AddNew" : "/Chapter/Update";
+                            var getResponse = AjaxConfig.sendRequestToServer(url, "Post", dataSend);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == BoxType.Success) {
+                                    let bookId = $chapterModal.Self.find('input[name=BookId]').val();
+                                    $chapterModal.LoadDanhSachChapter(bookId);
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                    $updateChapterModal.Self.modal('hide');
+                                }
+                                else {
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                },
+            }
+            $updateChapterModal.init();
         });
     </script>
 }

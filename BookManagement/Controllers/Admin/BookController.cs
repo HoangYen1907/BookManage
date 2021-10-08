@@ -10,15 +10,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Nancy.Json;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace BookManagement.Controllers.Admin
 {
     public class BookController : Controller
     {
         private readonly BookManagementDbContext _db;
-        public BookController(BookManagementDbContext db)
+        private readonly IWebHostEnvironment _env;
+        public BookController(BookManagementDbContext db, IWebHostEnvironment env)
         {
             _db = db;
+            _env = env;
         }
         public IActionResult Index()
         {
@@ -102,7 +106,7 @@ namespace BookManagement.Controllers.Admin
             msg.Header.MsgType = MessageType.Success;
             return msg;
         }
-        public JsonResult AddNew()
+        public async Task<JsonResult> AddNew()
         {
             using (var trans = _db.Database.BeginTransaction())
             {
@@ -129,6 +133,30 @@ namespace BookManagement.Controllers.Admin
                     Item.CreateTime = DateTime.Now;
                     _db.Books.Add(Item);
                     _db.SaveChanges();
+                    if(file != null)
+                    {
+                        var webRoot = _env.WebRootPath;
+                        string bookId = Item.BookId.ToString();
+                        if (!System.IO.Directory.Exists(webRoot + "/BookImage/"))
+                        {
+                            System.IO.Directory.CreateDirectory(webRoot + "/BookImage/");
+                        }
+                        if (!System.IO.Directory.Exists(webRoot + "/BookImage/"+bookId))
+                        {
+                            System.IO.Directory.CreateDirectory(webRoot + "/BookImage/" + bookId);
+                        }
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + "/BookImage/" + bookId, file.FileName);
+                        var pathIn = "/BookImage/" + bookId + "/" + file.FileName;
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                            var newItem = Item;
+                            newItem.BookImage = pathIn;
+                            _db.Entry(Item).State = EntityState.Detached;
+                            _db.Entry(newItem).State = EntityState.Modified;
+                            _db.SaveChanges();
+                        }
+                    }
                     IEnumerable<BookCategory> lstBookCateIn = lstCate.Select(x => new BookCategory() { CategoryId = x, BookId = Item.BookId });
                     if (lstBookCateIn.Any())
                     {
@@ -151,7 +179,7 @@ namespace BookManagement.Controllers.Admin
             }
         }
 
-        public JsonResult Update()
+        public async Task<JsonResult> Update()
         {
             using (var trans = _db.Database.BeginTransaction())
             {
@@ -184,13 +212,44 @@ namespace BookManagement.Controllers.Admin
                         return Json(msg);
                     }
 
-                    var lstCate = new JavaScriptSerializer().Deserialize<List<int>>(listBookCate);
-
+                    if (file != null)
+                    {
+                        var webRoot = _env.WebRootPath;
+                        string bookId = Item.BookId.ToString();
+                        if (!System.IO.Directory.Exists(webRoot + "/BookImage/"))
+                        {
+                            System.IO.Directory.CreateDirectory(webRoot + "/BookImage/");
+                        }
+                        if (!System.IO.Directory.Exists(webRoot + "/BookImage/" + bookId))
+                        {
+                            System.IO.Directory.CreateDirectory(webRoot + "/BookImage/" + bookId);
+                        }
+                        else
+                        {
+                            string[] files = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + "/BookImage/" + bookId));
+                            foreach (string fileExist in files)
+                            {
+                                System.IO.File.Delete(fileExist);
+                            }
+                        }
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + "/BookImage/" + bookId, file.FileName);
+                        var pathIn = "/BookImage/" + bookId + "/" + file.FileName;
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                            Item.BookImage = pathIn;
+                        }
+                    }
+                    else
+                    {
+                        Item.BookImage = Exsits.BookImage;
+                    }
                     Item.ModifyTime = DateTime.Now;
                     _db.Entry(Exsits).State = EntityState.Detached;
                     _db.Entry(Item).State = EntityState.Modified;
                     _db.SaveChanges();
 
+                    var lstCate = new JavaScriptSerializer().Deserialize<List<int>>(listBookCate);
                     List<int> lstExsits = _db.BookCategories.Where(x => lstCate.Contains(x.CategoryId) == true && x.BookId == Item.BookId).Select(x=>x.CategoryId).ToList();
                     List<BookCategory> lstRemove = _db.BookCategories.Where(x => lstCate.Contains(x.CategoryId) == false && x.BookId == Item.BookId).ToList();
                     _db.BookCategories.RemoveRange(lstRemove);
@@ -232,6 +291,12 @@ namespace BookManagement.Controllers.Admin
                     return Json(msg);
                 }
 
+                var webRoot = _env.WebRootPath;
+                string bookId = Exsits.BookId.ToString();
+                if (System.IO.Directory.Exists(webRoot + "/BookImage/" + bookId))
+                {
+                    System.IO.Directory.Delete(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot" + "/BookImage/" + bookId), true);
+                }
                 _db.Books.Remove(Exsits);
                 _db.SaveChanges();
                 msg.Description = "Xóa thành công";

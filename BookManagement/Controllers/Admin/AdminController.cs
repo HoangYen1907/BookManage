@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace BookManagement.Controllers.Admin
@@ -111,7 +113,8 @@ namespace BookManagement.Controllers.Admin
                 {
                     return Json(checkValid);
                 }
-
+                PashwordHash hash = new PashwordHash();
+                Item.Password = hash.PasswordHash(Item.Password);
                 Item.CreateTime = DateTime.Now;
                 Item.IsActive = false;
                 _db.Admins.Add(Item);
@@ -148,6 +151,7 @@ namespace BookManagement.Controllers.Admin
                 }
 
                 Item.ModifyTime = DateTime.Now;
+                Item.IsActive = Exsits.IsActive;
                 _db.Entry(Exsits).State = EntityState.Detached;
                 _db.Entry(Item).State = EntityState.Modified;
                 _db.SaveChanges();

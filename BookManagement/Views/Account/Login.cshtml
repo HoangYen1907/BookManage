@@ -22,7 +22,7 @@
             <input type="password" name="Password" placeholder="Mật khẩu" class="form-control" />
         </div>
         <div style="text-align:right; margin:10px;">
-            <a asp-area="" asp-controller="Category" asp-action="Index" class="btn btn-primary">Đăng nhập</a>
+            <a asp-area="" asp-controller="Category" asp-action="Index" class="btn btn-primary btnLogin">Đăng nhập</a>
         </div>
     </div>
     <div class="container" style="width: 500px;">
@@ -30,3 +30,41 @@
         <h2 class="text-center"><a asp-controller="Home" asp-action="Index">Back to Home</a></h2>
     </div>
 </body>
+
+@section scripts{
+    <script>
+        //$(document).ready(function () {
+        //    function Admin() {
+        //        this.userName = ($('input[name=UserName]').val() || '');
+        //        this.password = ($('input[name=Password]').val() || '');
+        //    }
+        //    var $danhmuc = {
+        //        init: function () {
+        //            $danhmuc.LoginClick();
+        //        },
+        //        LoginClick: function () {
+        //            $('.btnLogin').off('click').on('click', function () {
+        //                let item = new Admin();
+        //                if (item.userName == "" || item.password == "") {
+        //                    $msgDialog.confirm("orange", null, "Vui lòng nhập tên thể loại", null, null, null);
+        //                }
+        //                else {
+        //                    var getResponse = AjaxConfig.sendRequestToServer("/Account/CheckAccount", "GET", item);
+        //                    getResponse.then(function (response) {
+        //                        if (response.header.msgType == BoxType.Success) {
+        //                            $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+        //                        }
+        //                        else {
+        //                            $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+        //                        }
+        //                    }).catch(function (xhr) {
+        //                        AjaxConfig.CatchError(xhr);
+        //                    });
+        //                }
+        //            })
+        //        },
+        //    };
+        //    $danhmuc.init();
+        //});
+    </script>
+}
