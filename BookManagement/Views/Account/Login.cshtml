@@ -1,17 +1,9 @@
 ﻿@{
-    Layout = "";
+    Layout = "_LayoutLogin";
 }
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Login</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link rel="stylesheet" href="~/font-awesome/css/font-awesome.min.css" />
-</head>
-<body>
-    <div class="container" style="border: 1px solid #c2bfbf; width:500px; margin-top:100px; border-radius:10px;">
+<div class="card" style="border:none;">
+    <div class="container" style="border: 1px solid #c2bfbf; width:500px; margin-top:150px; border-radius:10px;">
         <h2 class="text-center" style="margin-top:10px;">Đăng nhập</h2>
         <div class="">
             Tên đăng nhập:<span style="color:red">*</span>&nbsp;
@@ -22,49 +14,52 @@
             <input type="password" name="Password" placeholder="Mật khẩu" class="form-control" />
         </div>
         <div style="text-align:right; margin:10px;">
-            <a asp-area="" asp-controller="Category" asp-action="Index" class="btn btn-primary btnLogin">Đăng nhập</a>
+            <button type="button" class="btn btn-primary btnLogin">Đăng nhập</button>
+            @*<a asp-area="" asp-controller="Category" asp-action="Index" class="btn btn-primary">Đăng nhập</a>*@
         </div>
     </div>
     <div class="container" style="width: 500px;">
         <br /> <br />
         <h2 class="text-center"><a asp-controller="Home" asp-action="Index">Back to Home</a></h2>
     </div>
-</body>
+</div>
 
 @section scripts{
     <script>
-        //$(document).ready(function () {
-        //    function Admin() {
-        //        this.userName = ($('input[name=UserName]').val() || '');
-        //        this.password = ($('input[name=Password]').val() || '');
-        //    }
-        //    var $danhmuc = {
-        //        init: function () {
-        //            $danhmuc.LoginClick();
-        //        },
-        //        LoginClick: function () {
-        //            $('.btnLogin').off('click').on('click', function () {
-        //                let item = new Admin();
-        //                if (item.userName == "" || item.password == "") {
-        //                    $msgDialog.confirm("orange", null, "Vui lòng nhập tên thể loại", null, null, null);
-        //                }
-        //                else {
-        //                    var getResponse = AjaxConfig.sendRequestToServer("/Account/CheckAccount", "GET", item);
-        //                    getResponse.then(function (response) {
-        //                        if (response.header.msgType == BoxType.Success) {
-        //                            $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
-        //                        }
-        //                        else {
-        //                            $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
-        //                        }
-        //                    }).catch(function (xhr) {
-        //                        AjaxConfig.CatchError(xhr);
-        //                    });
-        //                }
-        //            })
-        //        },
-        //    };
-        //    $danhmuc.init();
-        //});
+        $(document).ready(function () {
+            function Admin() {
+                this.userName = ($('input[name=UserName]').val() || '');
+                this.password = ($('input[name=Password]').val() || '');
+            }
+            var $danhmuc = {
+                init: function () {
+                    $danhmuc.LoginClick();
+                },
+                $thisPage: $('.card'),
+                LoginClick: function () {
+                    $danhmuc.$thisPage.find('.btnLogin').off('click').on('click', function () {
+                        let item = new Admin();
+                        if (item.userName == "" || item.password == "") {
+                            $msgDialog.confirm("orange", null, "Vui lòng nhập tên đăng nhập và mật khẩu", null, null, null);
+                        }
+                        else {
+                            var getResponse = AjaxConfig.sendRequestToServer("/Account/CheckAccount", "GET", item);
+                            getResponse.then(function (response) {
+                                if (response.header.msgType == BoxType.Success) {
+                                    window.location.href = '/Category';
+                                    //$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                }
+                                else {
+                                    $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                }
+                            }).catch(function (xhr) {
+                                AjaxConfig.CatchError(xhr);
+                            });
+                        }
+                    })
+                }
+            };
+            $danhmuc.init();
+        });
     </script>
 }

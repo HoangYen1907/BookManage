@@ -92,12 +92,15 @@ namespace BookManagement.Controllers.Admin
                 msg.Data = "UserName";
                 return msg;
             }
-            Exsits = _db.Admins.Where(x => x.UserID != Item.UserID && x.Email.Trim() == Item.Email.Trim()).FirstOrDefault();
-            if (Exsits != null)
+            if (!string.IsNullOrEmpty(Item.Email))
             {
-                msg.Description = "Email đã tồn tại, vui lòng nhập lại";
-                msg.Data = "Email";
-                return msg;
+                Exsits = _db.Admins.Where(x => x.UserID != Item.UserID && x.Email.Trim() == Item.Email.Trim()).FirstOrDefault();
+                if (Exsits != null)
+                {
+                    msg.Description = "Email đã tồn tại, vui lòng nhập lại";
+                    msg.Data = "Email";
+                    return msg;
+                }
             }
             msg.Header.MsgType = MessageType.Success;
             return msg;

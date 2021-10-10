@@ -171,3 +171,4 @@ D:\VS_Net2\BookManage\BookManagement\bin\Debug\netcoreapp3.1\Nancy.dll
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\GioiThieu.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\NDChuong.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\NDSach.cshtml.g.cs
+D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutLogin.cshtml.g.cs

@@ -48,6 +48,7 @@
                 </tbody>
             </table>
         </div>
+        <div class="loader" id="loader1"></div>
     </div>
 </div>
 
@@ -134,6 +135,7 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="loader" id="loader2"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
@@ -248,6 +250,7 @@
                                     '</td >' +
                                     '</tr>';
                             }
+                            document.getElementById("loader1").style.display = "none";
                             htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
                             $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
                             $('.countItem').text(response.data.length);
@@ -464,6 +467,7 @@
                                     '</td >' +
                                     '</tr>';
                             }
+                            document.getElementById("loader2").style.display = "none";
                             htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
                             $chapterModal.Self.find('table#TBLDANHSACHCHAPTER tbody').html(htmlContent);
                             $('.countItem').text(response.data.length);

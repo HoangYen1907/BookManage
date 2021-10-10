@@ -42,6 +42,7 @@
                 </tbody>
             </table>
         </div>
+        <div class="loader" id="loader"></div>
     </div>
 </div>
 
@@ -108,7 +109,7 @@
                     getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/Category/GetList", "GET", dataSend);
                         if (response.header.msgType == BoxType.Success) {
                             $danhmuc.PageCurrent = pageNum;
-                            var htmlContent = "";
+                            var htmlContent = '';
                             response.data = response.data || [];
                             if (response.data.length == 0) {
                                 htmlContent = '<tr><td colspan="10" class="text-center">Không có dữ liệu.</td></tr>';
@@ -129,6 +130,7 @@
                                     '</td >' +
                                     '</tr>';
                             }
+                            document.getElementById("loader").style.display = "none";
                             htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
                             $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
                             $('.countItem').text(response.data.length);

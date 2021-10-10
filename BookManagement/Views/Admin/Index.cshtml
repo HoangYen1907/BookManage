@@ -43,8 +43,8 @@
                 </tbody>
             </table>
         </div>
+        <div class="loader" id="loader"></div>
     </div>
-</div>
 
 <div class="modal" data-backdrop="static" id="CreateOrUpdateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg" role="document">
@@ -109,7 +109,7 @@
                 getResponse.then(function (response) { //getResponse thực hiện xong thì thực hiện funtion với tham số truyền vào là response - kết quả trả về của AjaxConfig.sendRequestToServer("/Admin/GetList", "GET", dataSend);
                     if (response.header.msgType == BoxType.Success) {
                         $danhmuc.PageCurrent = pageNum;
-                        var htmlContent = "";
+                        var htmlContent = '';
                         response.data = response.data || [];
                         if (response.data.length == 0) {
                             htmlContent = '<tr><td colspan="10" class="text-center">Không có dữ liệu.</td></tr>';
@@ -120,22 +120,26 @@
                         }
                         for (var i = 0; i < response.data.length; i++) {
                             var $Item = response.data[i];
-                            var str;
+                            var strIsActive, strButton;
                             if ($Item.isActive)
-                                str = 'Đã kích hoạt';
+                                strIsActive = 'Đã kích hoạt';
                             else
-                                str = '<button type="button" class="btn btn-primary btn-sm btnConfirm" data-id="' + $Item.userID + '"><i class="fa fa-check-square-o">&nbsp;Kích hoạt</i></button>';
+                                strIsActive = '<button type="button" class="btn btn-primary btn-sm btnConfirm" data-id="' + $Item.userID + '"><i class="fa fa-check-square-o">&nbsp;Kích hoạt</i></button>';
+                            if ($Item.userName == 'admin')
+                                strButton = '';
+                            else
+                                strButton = '<button type="button" class="btn btn-secondary btn-sm btnEdit" style="margin-right: 5px;" data-id="' + $Item.userID + '"><i class="fa fa-pencil-square-o">&nbsp;Sửa</i></button>' +
+                                            '<button type="button" class="btn btn-danger btn-sm btnDelete" data-id="' + $Item.userID + '"><i class="fa fa-trash-o">&nbsp;Xóa</i></button>'
                             htmlContent += '<tr>' +
                                 '<td class="text-center">' + (i + 1) + '</td>' +
                                 '<td class="text-center">' + ($Item.userName || '') + '</td>' +
                                 '<td class="text-center">' + ($Item.email || '') + '</td>' +
-                                '<td class="text-center">' + str + '</td>' +
-                                '<td class="text-center">' +
-                                    '<button type="button" class="btn btn-secondary btn-sm btnEdit" style="margin-right: 5px;" data-id="' + $Item.userID + '"><i class="fa fa-pencil-square-o">&nbsp;Sửa</i></button>' +
-                                    '<button type="button" class="btn btn-danger btn-sm btnDelete" data-id="' + $Item.userID + '"><i class="fa fa-trash-o">&nbsp;Xóa</i></button>' +
-                                '</td >' +
-                                '</tr>';
+                                '<td class="text-center">' + strIsActive + '</td>' +
+                                '<td class="text-center">' + strButton + '</td >' +
+                            '</tr>';
                         }
+                        //$('#loader').attr('display', 'none');
+                        document.getElementById("loader").style.display = "none";
                         htmlContent = $ValidateXSS.sanitizeHtmlTable([htmlContent]);
                         $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
                         $('.countItem').text(response.data.length);
@@ -163,6 +167,7 @@
                                 $('input[name=UserName]').val(item.userName);
                                 $('input[name=Email]').val(item.email);
                                 $('input[name=Password]').val(item.password);
+                                $('input[name=Password]').attr('readonly', true);
                                 $modal.modal('show');
                             }
                             else {
@@ -260,6 +265,7 @@
             },
             ResetModal: function () {
                 $modal.find('input').val("");
+                $('input[name=Password]').attr('readonly', false);
             },
             LoadDataSend: function () {
                 let item = new Admin();
