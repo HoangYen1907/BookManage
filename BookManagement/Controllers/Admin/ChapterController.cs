@@ -101,10 +101,23 @@ namespace BookManagement.Controllers.Admin
                 {
                     return Json(checkValid);
                 }
+
                 Item.TotalView = 0;
                 Item.CreateTime = DateTime.Now;
                 _db.Chapters.Add(Item);
                 _db.SaveChanges();
+
+                List<Chapter> Exsits = _db.Chapters.Where(x => x.BookId == Item.BookId).ToList();
+                Book book = _db.Books.Where(x => x.BookId == Item.BookId).FirstOrDefault();
+                if (Exsits.Count == book.TotalChapter)
+                {
+                    Book booknew = _db.Books.Where(x => x.BookId == Item.BookId).FirstOrDefault();
+                    booknew.IsCompleted = true;
+                    _db.Entry(book).State = EntityState.Detached;
+                    _db.Entry(booknew).State = EntityState.Modified;
+                    _db.SaveChanges();
+                }
+
                 msg.Description = "Thêm mới thành công";
                 msg.Header.MsgType = MessageType.Success;
                 return Json(msg);
@@ -168,6 +181,19 @@ namespace BookManagement.Controllers.Admin
 
                 _db.Chapters.Remove(Exsits);
                 _db.SaveChanges();
+
+                int bookId = Exsits.BookId;
+                List<Chapter> Ex = _db.Chapters.Where(x => x.BookId == bookId).ToList();
+                Book book = _db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
+                if (Ex.Count < book.TotalChapter && book.IsCompleted == true)
+                {
+                    Book booknew = _db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
+                    booknew.IsCompleted = false;
+                    _db.Entry(book).State = EntityState.Detached;
+                    _db.Entry(booknew).State = EntityState.Modified;
+                    _db.SaveChanges();
+                }
+
                 msg.Description = "Xóa thành công";
                 msg.Header.MsgType = MessageType.Success;
                 return Json(msg);
