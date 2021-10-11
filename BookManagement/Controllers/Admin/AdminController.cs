@@ -2,6 +2,7 @@
 using BookManagement.Data;
 using BookManagement.Dto;
 using BookManagement.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -22,6 +23,9 @@ namespace BookManagement.Controllers.Admin
         }
         public IActionResult Index()
         {
+            string us = HttpContext.Session.GetString("usname");
+            if (string.IsNullOrEmpty(us))
+                return Redirect("Account/Login");
             return View();
         }
 

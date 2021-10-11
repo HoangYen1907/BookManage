@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Nancy.Json;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Microsoft.AspNetCore.Http;
 
 namespace BookManagement.Controllers.Admin
 {
@@ -26,6 +27,9 @@ namespace BookManagement.Controllers.Admin
         }
         public IActionResult Index()
         {
+            string us = HttpContext.Session.GetString("usname");
+            if (string.IsNullOrEmpty(us))
+                return Redirect("Account/Login");
             return View();
         }
 

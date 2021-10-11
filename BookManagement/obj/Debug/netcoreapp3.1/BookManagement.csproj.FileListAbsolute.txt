@@ -172,3 +172,4 @@ D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\Gi
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\NDChuong.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\NDSach.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutLogin.cshtml.g.cs
+D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Dashboard\Index.cshtml.g.cs

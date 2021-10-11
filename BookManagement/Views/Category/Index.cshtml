@@ -113,6 +113,7 @@
                             response.data = response.data || [];
                             if (response.data.length == 0) {
                                 htmlContent = '<tr><td colspan="10" class="text-center">Không có dữ liệu.</td></tr>';
+                                document.getElementById("loader").style.display = "none";
                                 $danhmuc.$thisPage.find('table#TBLDANHSACH tbody').html(htmlContent);
                                 $('.countItem').text(response.data.length);
                                 $('.pagination-page').html('');

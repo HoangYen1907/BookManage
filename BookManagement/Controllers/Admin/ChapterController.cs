@@ -79,7 +79,7 @@ namespace BookManagement.Controllers.Admin
             Message msg = new Message();
             msg.Header.MsgType = MessageType.ClientError;
 
-            var Exsits = _db.Chapters.Where(x => x.ChapterId != Item.ChapterId && x.ChapterName.ToLower().Trim() == Item.ChapterName.ToLower().Trim()).FirstOrDefault();
+            var Exsits = _db.Chapters.Where(x => x.ChapterId != Item.ChapterId && x.ChapterName.ToLower().Trim() == Item.ChapterName.ToLower().Trim() && x.BookId == Item.BookId).FirstOrDefault();
             if (Exsits != null && string.IsNullOrEmpty(Item.ChapterName) == false)
             {
                 msg.Description = "Chương này đã tồn tại, vui lòng nhập lại";

@@ -2,6 +2,7 @@
 using BookManagement.Data;
 using BookManagement.Dto;
 using BookManagement.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -25,6 +26,7 @@ namespace BookManagement.Controllers
 
         public ActionResult Login()
         {
+            HttpContext.Session.SetString("usname", "");
             return View();
         }
 
@@ -34,6 +36,7 @@ namespace BookManagement.Controllers
             return View();
         }
 
+        [HttpPost]
         public JsonResult CheckAccount(BookManagement.Models.Admin Item)
         {
             Message msg = new Message();
@@ -51,6 +54,7 @@ namespace BookManagement.Controllers
                 msg.Description = "Đăng nhập thành công";
                 msg.Data = new { result.UserName, result.Password };
                 msg.Header.MsgType = MessageType.Success;
+                HttpContext.Session.SetString("usname", result.UserName);
                 return Json(msg);
             }
             catch (Exception ex)

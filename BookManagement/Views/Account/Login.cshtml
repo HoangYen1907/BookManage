@@ -10,7 +10,7 @@
             <input name="UserName" placeholder="Tên đăng nhập" class="form-control" />
         </div>
         <div class="">
-            Password:<span style="color:red">*</span>&nbsp;</span>
+            Password:<span style="color:red">*</span>&nbsp;
             <input type="password" name="Password" placeholder="Mật khẩu" class="form-control" />
         </div>
         <div style="text-align:right; margin:10px;">
@@ -43,11 +43,10 @@
                             $msgDialog.confirm("orange", null, "Vui lòng nhập tên đăng nhập và mật khẩu", null, null, null);
                         }
                         else {
-                            var getResponse = AjaxConfig.sendRequestToServer("/Account/CheckAccount", "GET", item);
+                            var getResponse = AjaxConfig.sendRequestToServer("/Account/CheckAccount", "Post", item);
                             getResponse.then(function (response) {
                                 if (response.header.msgType == BoxType.Success) {
-                                    window.location.href = '/Category';
-                                    //$msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);
+                                    window.location.href = '/Dashboard';
                                 }
                                 else {
                                     $msgDialog.confirm(response.header.msgType, null, response.description, null, null, null);

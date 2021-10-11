@@ -186,7 +186,7 @@ namespace BookManagement.Migrations
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TotalView")
+                    b.Property<int>("TotalView")
                         .HasColumnType("int");
 
                     b.HasKey("ChapterId");
