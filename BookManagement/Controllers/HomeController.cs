@@ -37,6 +37,16 @@ namespace BookManagement.Controllers
         {
             return View();
         }
+        
+        public IActionResult SachMoiCapNhat()
+        {
+            return View();
+        }
+
+        public IActionResult SachDaHoanThanh()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

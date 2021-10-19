@@ -1,35 +1,12 @@
-.demuc {
-	margin-top:20px;
-	margin-left:-10px;
-	font-size: 17px;
-	font-weight: bold;
+h3 {
+    margin-top:20px;
 }
-
-ul.product_list_1 {
-	padding: 0px;
-	margin: 0px;
-	list-style: none;
+img {
+    width: 150px;
+    height:200px;
 }
-
-ul.product_list_1 li {
-	margin: 5px;
-	list-style: none;
-	clear: left;
-	border-bottom: 1px solid #eae2e2;
-	float: left;
-	margin-bottom: 20px;
-}
-
-ul.product_list_1 li:hover {
-	background: #F0F8FF;
-}
-
-ul.product_list_1 li img {
-	width: 20%;
-	float: left;
-	margin: 10px;
-}
-
-.clear {
-	clear: both;
+a.bookhome:hover {
+    background-color: #cedce6;
+    border-radius: 5px;
+    padding: 5px;
 }

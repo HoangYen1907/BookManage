@@ -59,8 +59,11 @@ html {
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+    font-family: "Times", Lucida, sans-serif;
+    font-size:20px;
+    color:#000;
 }
 .footer {
     position: absolute;
@@ -95,6 +98,11 @@ body {
 .menu1 ul li:hover {
     background-color: #b5d2f3;
     border-radius:5px;
+}
+
+.catright a{
+    text-decoration:none;
+    color:#666;
 }
 
 /* Style the tab */
@@ -166,7 +174,4 @@ body {
     100% {
         transform: rotate(360deg);
     }
-}
-#loader {
-
 }

@@ -1,2 +1,9 @@
-﻿body {
+﻿h3 {
+    margin-top: 20px;
+}
+
+.content {
+    position: relative;
+    text-align: justify;
+    white-space: pre-line;
 }

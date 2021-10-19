@@ -1,2 +1,43 @@
-﻿body {
+﻿.avatar {
+    border-radius: 45%;
+    margin-top: 50px;
+    margin-bottom:20px;
+}
+
+.ther {
+    position: relative;
+    text-align: justify;
+    white-space: pre-line;
+    margin: 5px 10%;
+}
+
+.content {
+    font-size: 20px;
+    position: relative;
+    text-align: justify;
+    white-space: pre-line;
+}
+
+ul.list {
+    list-style-type: none;
+    margin-left: -40px;
+}
+
+a {
+    text-decoration: none;
+}
+
+th {
+    padding: 10px;
+    color: white;
+}
+
+th a:visited {
+    text-decoration: none;
+    color:#666;
+}
+
+th a:hover {
+    color: #98c9ed;
+    text-decoration: none;
 }

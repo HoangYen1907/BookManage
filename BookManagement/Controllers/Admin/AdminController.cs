@@ -156,7 +156,14 @@ namespace BookManagement.Controllers.Admin
                     msg.Description = "Thông tin yêu cầu không hợp lệ";
                     return Json(msg);
                 }
+                if (HttpContext.Session.GetString("usname") != "admin" && HttpContext.Session.GetString("usname") != Exsits.UserName)
+                {
+                    msg.Description = "Bạn không có quyền sửa";
+                    return Json(msg);
+                }
 
+                PashwordHash hash = new PashwordHash();
+                Item.Password = hash.PasswordHash(Item.Password);
                 Item.ModifyTime = DateTime.Now;
                 Item.IsActive = Exsits.IsActive;
                 _db.Entry(Exsits).State = EntityState.Detached;
@@ -187,6 +194,11 @@ namespace BookManagement.Controllers.Admin
                     msg.Description = "Thông tin yêu cầu không hợp lệ";
                     return Json(msg);
                 }
+                if (HttpContext.Session.GetString("usname") != "admin")
+                {
+                    msg.Description = "Bạn không có quyền xóa";
+                    return Json(msg);
+                }
 
                 _db.Admins.Remove(Exsits);
                 _db.SaveChanges();
@@ -212,6 +224,11 @@ namespace BookManagement.Controllers.Admin
                 if (Exsits == null)
                 {
                     msg.Description = "Thông tin yêu cầu không hợp lệ";
+                    return Json(msg);
+                }
+                if (HttpContext.Session.GetString("usname") != "admin")
+                {
+                    msg.Description = "Bạn không có quyền kích hoạt tài khoản";
                     return Json(msg);
                 }
 
