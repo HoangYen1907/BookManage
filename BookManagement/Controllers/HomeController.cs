@@ -1,4 +1,5 @@
 ﻿using BookManagement.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,6 +21,7 @@ namespace BookManagement.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 
@@ -28,16 +30,30 @@ namespace BookManagement.Controllers
             return View();
         }
 
-        public IActionResult NDSach()
+        public IActionResult NDSach(int id)
         {
+            ViewBag.BookId = id;
             return View();
         }
 
-        public IActionResult NDChuong()
+        public IActionResult NDChuong(int id)
         {
+            ViewBag.ChapterId = id;
             return View();
         }
-        
+
+        public IActionResult TheLoai(int id)
+        {
+            ViewBag.CateId = id;
+            return View();
+        }
+
+        public IActionResult TimKiem(int key)
+        {
+            ViewBag.Key = key;
+            return View();
+        }
+
         public IActionResult SachMoiCapNhat()
         {
             return View();

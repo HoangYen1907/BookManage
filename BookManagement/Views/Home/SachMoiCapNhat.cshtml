@@ -1,4 +1,10 @@
-﻿@{
+﻿@using BookManagement.Data;
+@using Microsoft.EntityFrameworkCore;
+@inject BookManagementDbContext _context;
+@{
+    BookManagementDbContext db = _context;
+    List<Book> booknew = db.Books.OrderBy(x => x.ModifyTime).Take(10).ToList();
+
     Layout = "_Layout";
     ViewData["Title"] = "Sách mới cập nhật";
 }
@@ -8,62 +14,33 @@
 <body>
     <div class="container">
         <h3>Sách mới cập nhật</h3>
-        <hr />
-        <div>
-            <a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" style="display:flex;flex-wrap:wrap;">
-                <div>
-                    <img src="~/img/thon-quy-am.jpg" />
-                </div>
-                <div style="margin-left:10px;margin-top:15px;">
-                    <h4>Thôn Quỷ Ám</h4>
-                    <p><b>Tác giả:&nbsp;</b>Tịch Dương</p>
-                    <p><b>Thể loại:&nbsp;</b>Kinh dị</p>
-                    <p><b>Số chương:&nbsp;</b>27</p>
-                </div>
-            </a>
-        </div>
-        <hr />
-        <div>
-            <a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" style="display:flex;flex-wrap:wrap;">
-                <div>
-                    <img src="~/img/loi-nguyen.jpg" />
-                </div>
-                <div style="margin-left:10px;margin-top:15px;">
-                    <h4>Lời nguyền</h4>
-                    <p><b>Tác giả:&nbsp;</b>Hua Jasmine</p>
-                    <p><b>Thể loại:&nbsp;</b>Kinh dị</p>
-                    <p><b>Số chương:&nbsp;</b>17</p>
-                </div>
-            </a>
-        </div>
-        <hr />
-        <div>
-            <a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" style="display:flex;flex-wrap:wrap;">
-                <div>
-                    <img src="~/img/thon-quy-am.jpg" />
-                </div>
-                <div style="margin-left:10px;margin-top:15px;">
-                    <h4>Thôn Quỷ Ám</h4>
-                    <p><b>Tác giả:&nbsp;</b>Tịch Dương</p>
-                    <p><b>Thể loại:&nbsp;</b>Kinh dị</p>
-                    <p><b>Số chương:&nbsp;</b>27</p>
-                </div>
-            </a>
-        </div>
-        <hr />
-        <div>
-            <a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" style="display:flex;flex-wrap:wrap;">
-                <div>
-                    <img src="~/img/loi-nguyen.jpg" />
-                </div>
-                <div style="margin-left:10px;margin-top:15px;">
-                    <h4>Lời nguyền</h4>
-                    <p><b>Tác giả:&nbsp;</b>Hua Jasmine</p>
-                    <p><b>Thể loại:&nbsp;</b>Kinh dị</p>
-                    <p><b>Số chương:&nbsp;</b>17</p>
-                </div>
-            </a>
-        </div>
+        @if (booknew.Count == 0)
+        {
+            <p>Tạm thời chưa có sách. Vui lòng quay lại sau</p>
+        }
+        else foreach (var book in booknew)
+        {
+            <hr />
+            <div>
+                <a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" asp-route-id="@book.BookId" style="display:flex;flex-wrap:wrap;">
+                    <div>
+                        <img src="@book.BookImage" />
+                    </div>
+                    <div style="margin-left:10px;margin-top:15px;">
+                        <h4>@book.BookName</h4>
+                        <p><b>Tác giả:&nbsp;</b>@book.Author</p>
+                        <p>
+                            <b>Thể loại:&nbsp;</b>
+                            @foreach (var item in db.BookCategories.Where(x => x.BookId == book.BookId))
+                            {
+                                <span>@db.Categories.Where(y => y.CategoryId == item.CategoryId).FirstOrDefault().CategoryName&nbsp;</span>
+                            }
+                        </p>
+                        <p><b>Số chương:&nbsp;</b>@book.TotalChapter</p>
+                    </div>
+                </a>
+            </div>
+        }
         <br />
     </div>
 </body>

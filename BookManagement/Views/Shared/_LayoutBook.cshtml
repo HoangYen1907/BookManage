@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using BookManagement.Data;
+@using Microsoft.EntityFrameworkCore;
+@inject BookManagementDbContext _context;
+@{
+    BookManagementDbContext db = _context;
+    List<Category> cat = db.Categories.OrderBy(x => x.CategoryName).ToList();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -48,15 +56,16 @@
                             <div class="dropdown show">
                                 <a class="btn dropdown-toggle cat" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-list">&nbsp;Thể loại</i></a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                    <a class="dropdown-item" href="#">Truyện trinh thám</a>
-                                    <a class="dropdown-item" href="#">Truyện kinh dị</a>
-                                    <a class="dropdown-item" href="#">Khoa học viễn tưởng</a>
+                                    @foreach (var item in cat)
+                                    {
+                                        <a class="dropdown-item" asp-controller="Home" asp-action="TheLoai" asp-route-id="@item.CategoryId">@item.CategoryName</a>
+                                    }
                                 </div>
                             </div>
                         </li>
                     </ul>
                 </div>
-                <a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary"><i class="fa fa-user">&nbsp;Admin Login</i></a>
+                @*<a asp-area="" asp-controller="Account" asp-action="Login" class="btn btn-primary"><i class="fa fa-user">&nbsp;Admin Login</i></a>*@
             </div>
         </nav>
     </header>
@@ -82,18 +91,17 @@
                     <div class="container catright" style="background-color:#FAFAD2;margin-top:30px;padding:20px;font-size:18px;">
                         <h5>Thể loại</h5>
                         <hr />
-                        <a href="#">Truyện trinh thám</a>
-                        <hr />
-                        <a href="#">Truyện kinh dị</a>
-                        <hr />
-                        <a href="#">Khoa học viễn tưởng</a>
-                        <hr />
+                        @foreach (var item in cat)
+                        {
+                            <a asp-controller="Home" asp-action="TheLoai" asp-route-id="@item.CategoryId">@item.CategoryName</a>
+                            <hr />
+                        }
                     </div>
                 </div>
             </div>
             <div style="width: 800px;">
                 <div class="" style="margin-left: -20px;">
-                    <img src="~/img/pencil.png" width="40%" style="margin:-30px 250px;height:110px;" />
+                    <img src="~/img/pencil.png" width="40%" style="margin:-30px 250px;height:120px;" />
                     <img src="~/img/gui_loi_yeu_thuong.png" width="100%" class="text-center" />
                 </div>
             </div>

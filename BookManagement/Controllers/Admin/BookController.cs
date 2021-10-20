@@ -216,6 +216,12 @@ namespace BookManagement.Controllers.Admin
                         return Json(msg);
                     }
 
+                    int num = _db.Chapters.Where(x => x.BookId == Exsits.BookId).Count();
+                    if (Item.TotalChapter == num)
+                        Item.IsCompleted = true;
+                    else
+                        Item.IsCompleted = false;
+
                     if (file != null)
                     {
                         var webRoot = _env.WebRootPath;

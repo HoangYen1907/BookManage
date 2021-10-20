@@ -1,0 +1,18 @@
+﻿@using BookManagement.Data;
+@using Microsoft.EntityFrameworkCore;
+@inject BookManagementDbContext _context;
+@{
+    BookManagementDbContext db = _context;
+    int key = ViewBag.Key;
+
+    Layout = "_Layout";
+    ViewData["Title"] = "Trang chủ";
+}
+<head>
+    <link rel="stylesheet" href="~/css/home/stylehome.css" />
+</head>
+<body>
+    <div class="container">
+        <h3>Tìm kiếm cho "@key"</h3>
+    </div>
+</body>

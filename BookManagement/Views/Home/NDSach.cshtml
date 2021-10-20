@@ -1,58 +1,38 @@
-﻿@{
+﻿@using BookManagement.Data;
+@using Microsoft.EntityFrameworkCore;
+@inject BookManagementDbContext _context;
+@{
+    int bookId = ViewBag.BookId;
+    BookManagementDbContext db = _context;
+    Book book = db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
+    List<Chapter> chapter = db.Chapters.Where(x => x.BookId == bookId).ToList();
+
     Layout = "_LayoutBook";
-    ViewData["Title"] = "Sách";
+    ViewData["Title"] = book.BookName;
 }
 <head>
     <link rel="stylesheet" href="~/css/home/stylebook.css" />
 </head>
 <body>
     <div class="container" style=" text-align: center;">
-        <img class="avatar" src="~/img/thon-quy-am.jpg" alt="" width="150px">
-        <h2> THÔN QUỶ ÁM </h2>
+        <img class="avatar" src="@book.BookImage" alt="" width="150px">
+        <h2> @book.BookName.ToUpper() </h2>
 
         <div class="ther">
-            Tác giả: Tịch Dương
+            Tác giả: @book.Author
 
-            Tóm tắt:
-            Chiếc xe chở mười ba hành khách đang trên đường đến tuyến cuối cùng trong ngày, giữa đường xe đột nhiên bị thứ gì đó làm hỏng khiến nó mắc kẹt lại thôn Ý Điền - nơi được nhiều người đồn đại là chốn linh thiên, cùng một truyền thuyết vô cùng đáng sợ.
-
-            "Ngoại trừ người trong thôn, bất kỳ kẻ nào không phải dân làng thôn Ý Điền đều sẽ nhận lấy một cái chết kinh khủng, nếu dám cả gan bước chân vào nơi đây."
-
-            Triệu Chí Duy, một tay nhà báo kiêu ngạo và ích kỷ, sau khi trải qua những chuyện kỳ dị xảy ra trong thôn Ý Điền, anh chợt nhớ đến cái chết của người đồng nghiệp bốn năm trước.
-
-            Qua đó, anh cũng bắt đầu nhận ra việc bản thân bị mắc kẹt lại đây hoàn toàn không phải do trùng hợp.
-
-            Tình trạng bản edit: Hoàn 8 quyển.
-
-            Gồm 8 quyển với các phần:
+            @book.Description
         </div>
-        <ul class="list">
-            <li> Thất tinh Lỗ Vương cung </li>
-            <li> Nộ hải tiềm sa </li>
-            <li> Tần Lĩnh thần thụ </li>
-            <li> Vân đỉnh thiên cung </li>
-            <li> Xà chiểu quỷ thành </li>
-            <li> Mê hải quy sào </li>
-            <li> Âm sơn cổ lâu </li>
-            <li> Cung lung thạch ảnh </li>
-            <li> Đại kết cục </li>
-        </ul>
         <br>
-        <h3> MỤC LỤC</h3>
+        <h3>MỤC LỤC</h3>
 
         <table align="center">
-            <tr>
-                <th><a asp-area="" asp-controller="Home" asp-action="NDChuong"> Chương 1: Huyết thi </a></th>
-            </tr>
-            <tr>
-                <th><a asp-area="" asp-controller="Home" asp-action="NDChuong"> Chương 2: 50 năm sau </a></th>
-            </tr>
-            <tr>
-                <th><a asp-area="" asp-controller="Home" asp-action="NDChuong"> Chương 3: Miếu Hạt Dưa  </a></th>
-            </tr>
-            <tr>
-                <th><a asp-area="" asp-controller="Home" asp-action="NDChuong"> Chương 4: Động xác </a></th>
-            </tr>
+            @foreach (var item in chapter)
+            {
+                <tr>
+                    <th><a asp-controller="Home" asp-action="NDChuong" asp-route-id="@item.ChapterId"> @item.ChapterName </a></th>
+                </tr>
+            }
         </table>
 
         <br><br><br>

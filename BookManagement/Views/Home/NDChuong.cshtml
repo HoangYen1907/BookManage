@@ -1,24 +1,33 @@
-﻿@{
+﻿@using BookManagement.Data;
+@using Microsoft.EntityFrameworkCore;
+@inject BookManagementDbContext _context;
+@{
+    BookManagementDbContext db = _context;
+    int chapterId = ViewBag.ChapterId;
+    int bookId = db.Chapters.Where(x => x.ChapterId == chapterId).FirstOrDefault().BookId;
+    Book book = db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
+    Chapter chapter = db.Chapters.Where(x => x.ChapterId == chapterId).FirstOrDefault();
+
     Layout = "_LayoutBook";
-    ViewData["Title"] = "Chương 1 - Thôn quỷ ám";
+    ViewData["Title"] = book.BookName;
 }
 <head>
     <link rel="stylesheet" href="~/css/home/stylechapter.css" />
 </head>
 <div class="container" style=" text-align: center;">
     <article>
-        <img class="avatar" src="~/img/thon-quy-am.jpg" alt="" width="150px">
-        <h2> THÔN QUỶ ÁM </h2>
+        <img class="avatar" src="@book.BookImage" alt="" width="150px">
+        <h2> @book.BookName.ToUpper() </h2>
         <nav>
             <ul class="navv">
-                <li> <a asp-area="" asp-controller="Home" asp-action="NDChuong"> << Chương trước </a> </li>
-                <li> <a asp-area="" asp-controller="Home" asp-action="NDSach"> <i class="fa fa-list">&nbsp;Mục lục</i></a> </li>
-                <li> <a asp-area="" asp-controller="Home" asp-action="NDChuong"> Chương sau >> </a> </li>
+                <li> <a asp-controller="Home" asp-action="NDChuong"> << Chương trước </a> </li>
+                <li> <a asp-controller="Home" asp-action="NDSach" asp-route-id="@bookId"> <i class="fa fa-list">&nbsp;Mục lục</i></a> </li>
+                <li> <a asp-controller="Home" asp-action="NDChuong"> Chương sau >> </a> </li>
             </ul>
         </nav>
 
-        <h1> Chương 1: Huyết thi </h1>
-        <i>Đăng vào 04/12/2018 bởi Vân Mộc</i>
+        <h1> @chapter.ChapterName </h1>
+        <i>Đăng vào @chapter.CreateTime</i>
         <div class="content">
             Năm mươi năm trước, trên đỉnh Phiêu Tử Lĩnh – Trường Sa.
 
