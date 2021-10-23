@@ -76,10 +76,7 @@
                     @RenderBody()
                 </div>
                 <div class="col-3" style="margin-top:25px;">
-                    <div class="float-right frame-header" style="background-color: #363636;padding:20px 25px 20px 25px;margin-bottom: 30px;">
-                        <input placeholder="Tìm kiếm ..." name="Keyword" style="width:100%;" />
-                        <button type="button" class="btn btn-primary btnSearch" style="display:none;"><i class="fa fa-search">&nbsp;Tìm kiếm</i></button>
-                    </div>
+                    
                     <div class="container" style="clear:right; background-color:#414663;color:#fff;font-weight:100;font-size:18px;text-align:justify;padding:0px 15%;">
                         <br />
                         <p>Những cuốn sách của nhóm được đăng tải và chia sẻ với các điều khoản có trong giấy phép Creative Commons Ghi nhận công của tác giả - Phi thương mại - Không phát sinh  3.0 Unported</p>
@@ -100,7 +97,7 @@
                 </div>
             </div>
             <div style="width: 800px;">
-                <div class="" style="margin-left: -20px;">
+                <div class="" style="margin-left: -20px;margin-bottom:200px">
                     <img src="~/img/pencil.png" width="40%" style="margin:-30px 250px;height:120px;" />
                     <img src="~/img/gui_loi_yeu_thuong.png" width="100%" class="text-center" />
                 </div>
@@ -108,9 +105,37 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - 3HYQBook
+    <footer class="border-top footerhome text-muted">
+        <div class="container" style="margin:20px auto;">
+            <div class="row" style="color:#fff;">
+                <div class="col-3">
+                    &copy; 2021 - 3HYQBook
+                </div>
+                <div class="col-3" style="font-size:18px;">
+                    <h4>Danh mục</h4>
+                    <li><a class="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                    <li><a class="" asp-controller="Home" asp-action="GioiThieu">Giới thiệu</a></li>
+                    <li><a class="" asp-controller="Home" asp-action="SachMoiCapNhat">Sách mới cập nhật</a></li>
+                    <li><a class="" asp-controller="Home" asp-action="SachDaHoanThanh">Sách đã hoàn thành</a></li>
+                </div>
+                <div class="col-3">
+                    <h4>Theo dõi chúng tôi tại</h4>
+                    <div style="font-size:35px;margin-left: 20px;">
+                        <a href="#"><i class="fa fa-facebook-square"></i></a>&nbsp;
+                        <a href="#"><i class="fa fa-twitter-square"></i></a>&nbsp;
+                        <a href="#"><i class="fa fa-google-plus-square"></i></a>&nbsp;
+                        <a href="#"><i class="fa fa-youtube-square"></i></a>&nbsp;
+                    </div>
+                </div>
+                <div class="col-3" style="font-size:18px;">
+                    <h4>Sản phẩm này thuộc về</h4>
+                    <li>Nguyễn Phi Hồng</li>
+                    <li>Nguyễn Quang Huy</li>
+                    <li>Đỗ Thị Huyền</li>
+                    <li>Tạ Diễm Quỳnh</li>
+                    <li>Nguyễn Thị Hoàng Yến</li>
+                </div>
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

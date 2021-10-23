@@ -27,7 +27,13 @@
         <h3>MỤC LỤC</h3>
 
         <table align="center">
-            @foreach (var item in chapter)
+            @if (chapter.Count() == 0)
+            {
+                <tr>
+                    <th style="color:#666;font-weight:400;">Tạm thời chưa cập nhật chương. Vui lòng quay lại sau</th>
+                </tr>
+            }
+            else foreach (var item in chapter)
             {
                 <tr>
                     <th><a asp-controller="Home" asp-action="NDChuong" asp-route-id="@item.ChapterId"> @item.ChapterName </a></th>

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/css/home/stylehome.css" />
 </head>
 <body>
-    <div class="container">
+    <div class="container" data-id="@cateId">
         <h3>@cateName</h3>
         @if (listBook.Count == 0)
         {
@@ -22,7 +22,7 @@
             <p>Tạm thời chưa có sách. Vui lòng quay lại sau</p>
         }
         else foreach (var item in listBook)
-            {
+            {               
                 Book book = db.Books.Where(x => x.BookId == item.BookId).FirstOrDefault();
                 <hr />
                 <div>

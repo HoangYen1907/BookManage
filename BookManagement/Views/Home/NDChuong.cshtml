@@ -7,6 +7,18 @@
     int bookId = db.Chapters.Where(x => x.ChapterId == chapterId).FirstOrDefault().BookId;
     Book book = db.Books.Where(x => x.BookId == bookId).FirstOrDefault();
     Chapter chapter = db.Chapters.Where(x => x.ChapterId == chapterId).FirstOrDefault();
+    List<Chapter> listchap = db.Chapters.Where(x => x.BookId == bookId).ToList();
+
+    int i;
+    for (i=0; i<listchap.Count; i++)
+        if (listchap[i].ChapterId == chapterId)
+            break;
+    int previd = chapterId;
+    int nextid = chapterId;
+    if (i > 0)
+        previd = listchap[i - 1].ChapterId;
+    if (i < listchap.Count - 1)
+        nextid = listchap[i + 1].ChapterId;
 
     Layout = "_LayoutBook";
     ViewData["Title"] = book.BookName;
@@ -20,9 +32,9 @@
         <h2> @book.BookName.ToUpper() </h2>
         <nav>
             <ul class="navv">
-                <li> <a asp-controller="Home" asp-action="NDChuong"> << Chương trước </a> </li>
+                <li> <a asp-controller="Home" asp-action="NDChuong" asp-route-id="@previd"> << Chương trước </a> </li>
                 <li> <a asp-controller="Home" asp-action="NDSach" asp-route-id="@bookId"> <i class="fa fa-list">&nbsp;Mục lục</i></a> </li>
-                <li> <a asp-controller="Home" asp-action="NDChuong"> Chương sau >> </a> </li>
+                <li> <a asp-controller="Home" asp-action="NDChuong" asp-route-id="@nextid"> Chương sau >> </a> </li>
             </ul>
         </nav>
 
@@ -130,9 +142,9 @@
         </div>
         <nav>
             <ul class="navv">
-                <li> <a asp-area="" asp-controller="Home" asp-action="NDChuong"> << Chương trước </a> </li>
-                <li> <a asp-area="" asp-controller="Home" asp-action="NDSach"> <i class="fa fa-list">&nbsp;Mục lục</i> </a> </li>
-                <li> <a asp-area="" asp-controller="Home" asp-action="NDChuong"> Chương sau >> </a> </li>
+                <li> <a asp-controller="Home" asp-action="NDChuong" asp-route-id="@previd"> << Chương trước </a> </li>
+                <li> <a asp-controller="Home" asp-action="NDSach" asp-route-id="@bookId"> <i class="fa fa-list">&nbsp;Mục lục</i></a> </li>
+                <li> <a asp-controller="Home" asp-action="NDChuong" asp-route-id="@nextid"> Chương sau >> </a> </li>
             </ul>
         </nav>
         <br /><br />

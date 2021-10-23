@@ -29,10 +29,9 @@ a {
 
 th {
     padding: 10px;
-    color: white;
 }
 
-th a:visited {
+th a{
     text-decoration: none;
     color:#666;
 }
