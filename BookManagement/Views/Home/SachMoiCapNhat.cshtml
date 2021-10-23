@@ -2,8 +2,8 @@
 @using Microsoft.EntityFrameworkCore;
 @inject BookManagementDbContext _context;
 @{
-    BookManagementDbContext db = _context;
-    List<Book> booknew = db.Books.OrderBy(x => x.ModifyTime).Take(10).ToList();
+    //BookManagementDbContext db = _context;
+    //List<Book> booknew = db.Books.OrderBy(x => x.ModifyTime).Take(10).ToList();
 
     Layout = "_Layout";
     ViewData["Title"] = "Sách mới cập nhật";
@@ -14,33 +14,67 @@
 <body>
     <div class="container">
         <h3>Sách mới cập nhật</h3>
-        @if (booknew.Count == 0)
-        {
-            <p>Tạm thời chưa có sách. Vui lòng quay lại sau</p>
-        }
-        else foreach (var book in booknew)
-        {
-            <hr />
-            <div>
-                <a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" asp-route-id="@book.BookId" style="display:flex;flex-wrap:wrap;">
-                    <div>
-                        <img src="@book.BookImage" />
-                    </div>
-                    <div style="margin-left:10px;margin-top:15px;">
-                        <h4>@book.BookName</h4>
-                        <p><b>Tác giả:&nbsp;</b>@book.Author</p>
-                        <p>
-                            <b>Thể loại:&nbsp;</b>
-                            @foreach (var item in db.BookCategories.Where(x => x.BookId == book.BookId))
-                            {
-                                <span>@db.Categories.Where(y => y.CategoryId == item.CategoryId).FirstOrDefault().CategoryName&nbsp;</span>
-                            }
-                        </p>
-                        <p><b>Số chương:&nbsp;</b>@book.TotalChapter</p>
-                    </div>
-                </a>
-            </div>
-        }
+        <div class="book-new">
+
+        </div>
         <br />
     </div>
 </body>
+
+@section scripts {
+    <script>
+        $(document).ready(function () { //Sau khi load xong html
+            var $danhmuc = {
+                init: function () {
+                    $danhmuc.LoadDanhSach();
+                    $danhmuc.SearchClick();
+                },
+                SearchClick: function () {
+                    $('.btnSearch').off('click').on('click', function () {
+                        $danhmuc.LoadDanhSach();
+                    });
+                },
+                LoadDanhSach: function () {
+                    var keyword = ($('input[name=Keyword]').val() || "");
+                    var dataSend = { 'keyword': keyword }
+                    var getResponse = AjaxConfig.sendRequestToServer("/Home/TimKiem", "GET", dataSend);
+                    getResponse.then(function (response) {
+                        console.log(response);
+                        if (response.header.msgType == BoxType.Success) {
+                            var bookNewContent = "";
+                            var lstBookNew = response.data || [];
+                            if (lstBookNew.length == 0) {
+                                bookNewContent = '<hr /><p>Tạm thời chưa có sách. Vui lòng quay lại sau</p>';
+                            }
+                            else {
+                                for (var i = 0; i < lstBookNew.length; i++) {
+                                    let $Item = lstBookNew[i];
+                                    bookNewContent += '<hr /><div>' +
+                                        '<a class="nav-link text-dark bookhome" asp-controller="Home" asp-action="NDSach" asp-route-id="' + $Item.bookId + '" style="display:flex;flex-wrap:wrap;cursor:pointer;">' +
+                                        '<div><img src="' + $Item.bookImage + '" /></div>' +
+                                        '<div style="margin-left:10px;margin-top:15px;"><h4>' + $Item.bookName + '</h4>' +
+                                        '<p><b>Tác giả:&nbsp;</b>' + $Item.author + '</p>' +
+                                        '<p><b>Số chương:&nbsp;</b>' + $Item.totalChapter + '</p></div></a></div>'
+                                }
+                            }
+                            
+                            $('.book-new').html(bookNewContent);
+                            $danhmuc.Redirect();
+                        } else {
+                            $msgDialog.confirm(response.header.msgType, null, response.body.description, null, null, null);
+                        }
+                    }).catch(function (xhr) {
+                        AjaxConfig.CatchError(xhr);
+                    });
+                },
+                Redirect: function () {
+                    $('.book-new').find('a').off('click').on('click', function () {
+                        let url = '/Home/NDSach/' + ($(this).attr('asp-route-id'));
+                        window.location = url;
+                    });
+                }
+            };
+            $danhmuc.init();
+        });
+    </script>
+}

@@ -177,4 +177,3 @@ D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\Sa
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\SachMoiCapNhat.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_LayoutBook.cshtml.g.cs
 D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\TheLoai.cshtml.g.cs
-D:\VS_Net2\BookManage\BookManagement\obj\Debug\netcoreapp3.1\Razor\Views\Home\TimKiem.cshtml.g.cs

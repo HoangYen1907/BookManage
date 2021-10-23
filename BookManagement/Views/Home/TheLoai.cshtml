@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/css/home/stylehome.css" />
 </head>
 <body>
-    <div class="container" data-id="@cateId">
+    <div class="container">
         <h3>@cateName</h3>
         @if (listBook.Count == 0)
         {
@@ -35,9 +35,9 @@
                             <p><b>Tác giả:&nbsp;</b>@book.Author</p>
                             <p>
                                 <b>Thể loại:&nbsp;</b>
-                                @foreach (var item in db.BookCategories.Where(x => x.BookId == book.BookId))
+                                @foreach (var itemi in db.BookCategories.Where(x => x.BookId == book.BookId).ToList())
                                 {
-                                    <span>@db.Categories.Where(y => y.CategoryId == item.CategoryId).FirstOrDefault().CategoryName&nbsp;</span>
+                                    <span>@db.Categories.Where(y => y.CategoryId == itemi.CategoryId).FirstOrDefault().CategoryName&nbsp;</span>
                                 }
                             </p>
                             <p><b>Số chương:&nbsp;</b>@book.TotalChapter</p>
