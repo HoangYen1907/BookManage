@@ -135,22 +135,6 @@
     <script src="~/Scripts/Common/ValidateXSS.js"></script>
     <script src="~/Scripts/Common/Message.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        $(document).ready(function () {
-            var $danhmuc = {
-                init: function () {
-                    $danhmuc.SearchClick();
-                },
-                SearchClick: function () {
-                    //$('.btnSearch').off('click').on('click', function () {
-                    //    key = ($('input[name=Keyword]').val() || "");
-                    //    //$('#aSearch').attr('asp-route-id', key);
-                    //});
-                }
-            };
-            $danhmuc.init();
-        });
-    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
